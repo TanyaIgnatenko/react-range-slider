@@ -34,7 +34,7 @@ class TimeRangeSlider extends React.Component {
   componentDidMount() {
     this.measureElementsSize();
 
-    this.handlersPlacer = new Placer({
+    this.handlesPlacer = new Placer({
       relatedToContainer: this.slider,
       minLeft: -this.SLIDER_HANDLER_HALF_WIDTH,
       maxLeft: this.SLIDER_WIDTH - this.SLIDER_HANDLER_HALF_WIDTH,
@@ -56,7 +56,7 @@ class TimeRangeSlider extends React.Component {
     }
     if (prevProps.range !== this.props.range) {
       this.measureElementsSize();
-      this.updateHandlersPlacerPositionLimitations();
+      this.updateHandlesPlacerPositionLimitations();
       this.updateSelectedRangePlacerPositionLimitations();
     }
   }
@@ -89,11 +89,11 @@ class TimeRangeSlider extends React.Component {
     };
 
     switch (this.grabbedObject.name) {
-      case 'first-handler':
-        this.handleFirstHandlerMove(pagePosition);
+      case 'first-handle':
+        this.handleFirstHandleMove(pagePosition);
         break;
-      case 'second-handler':
-        this.handleSecondHandlerMove(pagePosition);
+      case 'second-handle':
+        this.handleSecondHandleMove(pagePosition);
         break;
       case 'selected-range':
         this.handleSelectedRangeMove(pagePosition);
@@ -102,15 +102,15 @@ class TimeRangeSlider extends React.Component {
     }
   };
 
-  handleFirstHandlerMove = pagePosition => {
+  handleFirstHandleMove = pagePosition => {
     const { selectedRange } = this.props;
 
-    const sliderPosition = this.handlersPlacer.place(pagePosition);
+    const sliderPosition = this.handlesPlacer.place(pagePosition);
 
-    const handlerCenter = sliderPosition.left + this.SLIDER_HANDLER_HALF_WIDTH;
+    const handleCenter = sliderPosition.left + this.SLIDER_HANDLER_HALF_WIDTH;
     const newSelectedRange = {
-      startHour: Math.round(this.toHour(handlerCenter)),
-      endHour: !this.handlersCrossed
+      startHour: Math.round(this.toHour(handleCenter)),
+      endHour: !this.handlesCrossed
         ? selectedRange.endHour
         : selectedRange.startHour,
     };
@@ -118,17 +118,17 @@ class TimeRangeSlider extends React.Component {
     this.handleSelectedRangeChange(newSelectedRange);
   };
 
-  handleSecondHandlerMove = pagePosition => {
+  handleSecondHandleMove = pagePosition => {
     const { selectedRange } = this.props;
 
-    const sliderPosition = this.handlersPlacer.place(pagePosition);
+    const sliderPosition = this.handlesPlacer.place(pagePosition);
 
-    const handlerCenter = sliderPosition.left + this.SLIDER_HANDLER_HALF_WIDTH;
+    const handleCenter = sliderPosition.left + this.SLIDER_HANDLER_HALF_WIDTH;
     const newSelectedRange = {
-      startHour: !this.handlersCrossed
+      startHour: !this.handlesCrossed
         ? selectedRange.startHour
         : selectedRange.endHour,
-      endHour: Math.round(this.toHour(handlerCenter)),
+      endHour: Math.round(this.toHour(handleCenter)),
     };
 
     this.handleSelectedRangeChange(newSelectedRange);
@@ -154,9 +154,9 @@ class TimeRangeSlider extends React.Component {
   };
 
   handleSelectedRangeChange = ({ startHour, endHour }) => {
-    this.handlersCrossed = startHour > endHour;
+    this.handlesCrossed = startHour > endHour;
 
-    const selectedRange = !this.handlersCrossed
+    const selectedRange = !this.handlesCrossed
       ? {
           startHour,
           endHour,
@@ -189,12 +189,12 @@ class TimeRangeSlider extends React.Component {
     const hoursCount = range.endHour - range.startHour;
     this.HOUR_WIDTH = this.SLIDER_WIDTH / hoursCount;
 
-    this.SLIDER_HANDLER_HALF_WIDTH = this.handler.offsetWidth / 2;
+    this.SLIDER_HANDLER_HALF_WIDTH = this.handle.offsetWidth / 2;
   }
 
-  updateHandlersPlacerPositionLimitations() {
-    this.handlersPlacer.setMinLeft(-this.SLIDER_HANDLER_HALF_WIDTH);
-    this.handlersPlacer.setMaxLeft(
+  updateHandlesPlacerPositionLimitations() {
+    this.handlesPlacer.setMinLeft(-this.SLIDER_HANDLER_HALF_WIDTH);
+    this.handlesPlacer.setMaxLeft(
       this.SLIDER_WIDTH - this.SLIDER_HANDLER_HALF_WIDTH,
     );
   }
@@ -207,36 +207,36 @@ class TimeRangeSlider extends React.Component {
 
   setSliderRef = slider => (this.slider = slider);
 
-  setHandlerRef = handler => (this.handler = handler);
+  setHandleRef = handle => (this.handle = handle);
 
   render() {
     const { range, selectedRange, markStep, className } = this.props;
 
-    const startHandlerPosition = this.toSliderPosition(selectedRange.startHour);
-    const endHandlerPosition = this.toSliderPosition(selectedRange.endHour);
+    const startHandlePosition = this.toSliderPosition(selectedRange.startHour);
+    const endHandlePosition = this.toSliderPosition(selectedRange.endHour);
 
-    const firstHandlerPosition = this.handlersCrossed
-      ? endHandlerPosition
-      : startHandlerPosition;
-    const secondHandlerPosition = this.handlersCrossed
-      ? startHandlerPosition
-      : endHandlerPosition;
+    const firstHandlePosition = this.handlesCrossed
+      ? endHandlePosition
+      : startHandlePosition;
+    const secondHandlePosition = this.handlesCrossed
+      ? startHandlePosition
+      : endHandlePosition;
 
-    const selectedRangePosition = startHandlerPosition;
-    this.selectedRangeLength = endHandlerPosition - startHandlerPosition;
+    const selectedRangePosition = startHandlePosition;
+    this.selectedRangeLength = endHandlePosition - startHandlePosition;
 
     return (
       <div ref={this.setSliderRef} className={classNames('slider', className)}>
         <div
-          name='first-handler'
-          className='slider-handler'
-          ref={this.setHandlerRef}
-          style={{ left: firstHandlerPosition + POSITION_UNIT }}
+          name='first-handle'
+          className='slider-handle'
+          ref={this.setHandleRef}
+          style={{ left: firstHandlePosition + POSITION_UNIT }}
         />
         <div
-          name='second-handler'
-          className='slider-handler'
-          style={{ left: secondHandlerPosition + POSITION_UNIT }}
+          name='second-handle'
+          className='slider-handle'
+          style={{ left: secondHandlePosition + POSITION_UNIT }}
         />
         <div
           name='selected-range'
