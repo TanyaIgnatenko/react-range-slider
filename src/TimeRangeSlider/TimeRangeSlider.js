@@ -53,6 +53,7 @@ class TimeRangeSlider extends React.Component {
   componentDidMount() {
     this.measureElementsSize();
     this.calculateSliderElementsPositionsLimits();
+    window.addEventListener('resize', this.handleResize);
     this.forceUpdate();
   }
 
@@ -60,6 +61,11 @@ class TimeRangeSlider extends React.Component {
     this.measureElementsSize();
     this.calculateSliderElementsPositionsLimits();
   }
+
+  handleResize = () => {
+    this.measureElementsSize();
+    this.calculateSliderElementsPositionsLimits();
+  };
 
   grabStartHandle = () => {
     this.grabbedObject = GRABBED_OBJECT.FIRST_HANDLE;
