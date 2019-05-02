@@ -22,7 +22,7 @@ const POSITION_UNIT = 'px';
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
-class TimeRangeSlider extends React.Component {
+class TimeRangeSlider extends React.PureComponent {
   static propTypes = {
     range: PropTypes.shape({
       startHour: PropTypes.number.isRequired,
@@ -48,13 +48,13 @@ class TimeRangeSlider extends React.Component {
     mode: MODE.CONTROLLABLE,
     startHandlePosition: null,
     endHandlePosition: null,
+    hourWidth: null,
   };
 
   componentDidMount() {
     this.measureElementsSize();
     this.calculateSliderElementsPositionsLimits();
     window.addEventListener('resize', this.handleResize);
-    this.forceUpdate();
   }
 
   componentDidUpdate() {
@@ -198,14 +198,16 @@ class TimeRangeSlider extends React.Component {
 
   toHour = sliderPosition => {
     const { range } = this.props;
-    const offsetFromStartInHours = sliderPosition / this.hourWidth;
+    const { hourWidth } = this.state;
+    const offsetFromStartInHours = sliderPosition / hourWidth;
     return range.startHour + offsetFromStartInHours;
   };
 
   toSliderPosition = hour => {
     const { range } = this.props;
+    const { hourWidth } = this.state;
     const offsetFromStartHour = hour - range.startHour;
-    return offsetFromStartHour * this.hourWidth;
+    return offsetFromStartHour * hourWidth;
   };
 
   calculateSliderElementsPositionsLimits() {
@@ -220,7 +222,7 @@ class TimeRangeSlider extends React.Component {
 
     const { range } = this.props;
     const hoursCount = range.endHour - range.startHour;
-    this.hourWidth = this.sliderWidth / hoursCount;
+    this.setState({ hourWidth: this.sliderWidth / hoursCount });
 
     this.handleWidth = this.handle.getBoundingClientRect().width;
   }
