@@ -32,6 +32,7 @@ settings:
 
 rules:
   no-unused-expressions: off
+  one-var: off
   react/sort-comp: off
   no-alert: off
   prettier/prettier: error

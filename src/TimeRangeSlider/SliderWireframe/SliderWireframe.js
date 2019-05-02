@@ -9,7 +9,7 @@ const HOURS_IN_DAY = 24;
 const toBeautifulTimeString = hour =>
   `${hour < HOURS_IN_DAY ? hour : hour - HOURS_IN_DAY}:00`;
 
-function Wireframe({ range, markStep }) {
+function SliderWireframe({ range, markStep }) {
   const hoursRange = makeRange(range.startHour, range.endHour);
   const lastHour = hoursRange[hoursRange.length - 1];
 
@@ -40,7 +40,7 @@ function Wireframe({ range, markStep }) {
   );
 }
 
-Wireframe.propTypes = {
+SliderWireframe.propTypes = {
   range: PropTypes.shape({
     startHour: PropTypes.number.isRequired,
     endHour: PropTypes.number.isRequired,
@@ -48,8 +48,8 @@ Wireframe.propTypes = {
   markStep: PropTypes.number,
 };
 
-Wireframe.defaultProps = {
+SliderWireframe.defaultProps = {
   markStep: 4,
 };
 
-export default Wireframe;
+export default SliderWireframe;
