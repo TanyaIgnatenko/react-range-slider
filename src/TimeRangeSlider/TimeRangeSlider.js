@@ -108,64 +108,95 @@ class TimeRangeSlider extends React.Component {
     });
   };
 
-  moveObject = async ({ movementX }) => {
-    let { startHandlePosition, endHandlePosition } = this.state;
+  moveObject = ({ movementX }) => {
+    const { startHandlePosition, endHandlePosition } = this.state;
+    let newStartHandlePosition;
+    let newEndHandlePosition;
 
     switch (this.grabbedObject) {
       case GRABBED_OBJECT.FIRST_HANDLE: {
-        startHandlePosition = clamp(
-          startHandlePosition + movementX,
-          -this.SLIDER_HANDLE_HALF_WIDTH,
-          this.SLIDER_WIDTH - this.SLIDER_HANDLE_HALF_WIDTH,
+        newStartHandlePosition = this.clampHandlePosition(startHandlePosition + movementX);
+        newEndHandlePosition = endHandlePosition;
+
+        [newStartHandlePosition, newEndHandlePosition] = this.swapHandlersIfCrossed(
+          newStartHandlePosition,
+          newEndHandlePosition,
         );
         break;
       }
       case GRABBED_OBJECT.SECOND_HANDLE: {
-        endHandlePosition = clamp(
-          endHandlePosition + movementX,
-          -this.SLIDER_HANDLE_HALF_WIDTH,
-          this.SLIDER_WIDTH - this.SLIDER_HANDLE_HALF_WIDTH,
+        newEndHandlePosition = this.clampHandlePosition(endHandlePosition + movementX);
+        newStartHandlePosition = startHandlePosition;
+
+        [newStartHandlePosition, newEndHandlePosition] = this.swapHandlersIfCrossed(
+          newStartHandlePosition,
+          newEndHandlePosition,
         );
         break;
       }
       case GRABBED_OBJECT.SELECTED_RANGE: {
-        const selectedRangeLeftMin = -this.SLIDER_HANDLE_HALF_WIDTH;
-        const selectedRangeRightMax =
-          this.SLIDER_WIDTH - this.SLIDER_HANDLE_HALF_WIDTH;
-        if (
-          startHandlePosition + movementX >= selectedRangeLeftMin &&
-          endHandlePosition + movementX <= selectedRangeRightMax
-        ) {
-          startHandlePosition += movementX;
-          endHandlePosition += movementX;
-        }
+        const newSelectedRangeStartPosition = this.clampSelectedRangeStartPosition(
+          startHandlePosition + movementX,
+        );
+        newStartHandlePosition = newSelectedRangeStartPosition;
+        newEndHandlePosition = newSelectedRangeStartPosition + this.selectedRangeLength;
         break;
       }
     }
 
-    // TODO: this situation can happen only when grabbed object is handle
-    //  (redundant check in case of grabbed object is selected range)
-    //  but this way is more readable (is it good decision?)
-    const handlesCrossed = startHandlePosition > endHandlePosition;
-    if (handlesCrossed) {
-      [startHandlePosition, endHandlePosition] = [
-        endHandlePosition,
-        startHandlePosition,
-      ];
+    this.handleHandlesPositionsChange(newStartHandlePosition, newEndHandlePosition);
+  };
+
+  clampHandlePosition(position) {
+    return clamp(
+      position,
+      -this.SLIDER_HANDLE_HALF_WIDTH,
+      this.SLIDER_WIDTH - this.SLIDER_HANDLE_HALF_WIDTH,
+    );
+  }
+
+  clampSelectedRangeStartPosition(position) {
+    return clamp(
+      position,
+      -this.SLIDER_HANDLE_HALF_WIDTH,
+      this.SLIDER_WIDTH - this.selectedRangeLength,
+    );
+  }
+
+  swapHandlersIfCrossed(startHandlePosition, endHandlePosition) {
+    if (startHandlePosition > endHandlePosition) {
+      [startHandlePosition, endHandlePosition] = [endHandlePosition, startHandlePosition];
+
       this.grabbedObject =
         this.grabbedObject === GRABBED_OBJECT.FIRST_HANDLE
           ? GRABBED_OBJECT.SECOND_HANDLE
           : GRABBED_OBJECT.FIRST_HANDLE;
     }
+    return [startHandlePosition, endHandlePosition];
+  }
 
-    this.setState({ startHandlePosition, endHandlePosition });
+  handleHandlesPositionsChange = (newStartHandlePosition, newEndHandlePosition) => {
+    const {
+      startHandlePosition: lastStartHandlePosition,
+      endHandlePosition: lastEndHandlePosition,
+    } = this.state;
 
-    const newSelectedRange = {
-      startHour: Math.round(this.toHour(startHandlePosition)),
-      endHour: Math.round(this.toHour(endHandlePosition)),
-    };
-    const { onSelectedRangeChange } = this.props;
-    onSelectedRangeChange(newSelectedRange);
+    if (
+      newStartHandlePosition !== lastStartHandlePosition ||
+      newEndHandlePosition !== lastEndHandlePosition
+    ) {
+      this.setState({
+        startHandlePosition: newStartHandlePosition,
+        endHandlePosition: newEndHandlePosition,
+      });
+
+      const newSelectedRange = {
+        startHour: Math.round(this.toHour(newStartHandlePosition)),
+        endHour: Math.round(this.toHour(newEndHandlePosition)),
+      };
+      const { onSelectedRangeChange } = this.props;
+      onSelectedRangeChange(newSelectedRange);
+    }
   };
 
   toHour = sliderPosition => {
@@ -216,9 +247,7 @@ class TimeRangeSlider extends React.Component {
         : this.calculateHandlesPositionsFromState();
 
     const selectedRangePosition = startHandlePosition;
-    this.selectedRangeLength = Math.round(
-      endHandlePosition - startHandlePosition,
-    );
+    this.selectedRangeLength = Math.round(endHandlePosition - startHandlePosition);
 
     return (
       <div ref={this.setSliderRef} className={classNames('slider', className)}>
