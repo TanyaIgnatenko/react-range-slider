@@ -1,5 +1,6 @@
 .slider {
   position: relative;
+
   display: flex;
   flex-shrink: 0;
   flex-grow: 0;
@@ -7,17 +8,19 @@
 
   .time-interval {
     z-index: -1;
+
     width: 21px;
     height: 6px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-right: none;
+
     background-color: white;
 
     &.selected {
       border: 1px solid #e7c100;
       border-right: none;
-      background-color: #fee8a4;
 
+      background-color: #fee8a4;
     }
   }
 
@@ -28,20 +31,24 @@
       position: absolute;
       top: -35px;
       left: -12px;
-      font-size: 11px;
+
       margin-bottom: 8px;
       margin-left: 15.7%;
+
+      font-size: 11px;
     }
 
     .time-interval.with-mark {
       border-left: none;
 
       &:after {
-        content: '';
         position: absolute;
         top: -3.5px;
+
         width: 1px;
         height: 13px;
+
+        content: '';
         border-left: 1px solid #d4d4d4;
       }
 
@@ -54,22 +61,26 @@
       height: 6px;
 
       &:after {
-        content: '';
         position: absolute;
         top: -3.5px;
+
         width: 1px;
         height: 13px;
+
+        content: '';
         border-left: 1px solid rgba(0, 0, 0, 0.2);
       }
     }
   }
 
   .selected-range {
-    z-index: 1000;
     position: absolute;
+    z-index: 1000;
+
     height: 6px;
     border: 1px solid rgba(231, 197, 0, 1);
     border-right: none;
+
     background-color: rgba(255, 222, 65, 0.4);
   }
 
@@ -80,19 +91,30 @@
 
     width: 14px;
     height: 20px;
+
     background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 1px;
     cursor: ew-resize;
 
     &:after {
-      content: '';
       position: absolute;
+
       top: 27%;
       left: 30%;
-      height: 46%;
+
       width: 40%;
-      background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 20%, white 20% 40%, rgba(0, 0, 0, 0.4) 40% 60%, white 60% 80%, rgba(0, 0, 0, 0.4) 80%);
+      height: 46%;
+
+      content: '';
+      background: linear-gradient(
+                      to right,
+                      #919191 20%,
+                      white 20% 40%,
+                      #919191 40% 60%,
+                      white 60% 80%,
+                      #919191 80%
+      );
     }
   }
 }
