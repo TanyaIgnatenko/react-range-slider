@@ -85,6 +85,7 @@ class TimeRangeSlider extends React.PureComponent {
   grabObject() {
     document.addEventListener('mousemove', this.moveObject);
     document.addEventListener('mouseup', this.releaseObject);
+    this.removeSmoothHoursRoundingAnimation();
     this.switchToUncontrollableMode();
   }
 
@@ -92,8 +93,21 @@ class TimeRangeSlider extends React.PureComponent {
     document.removeEventListener('mousemove', this.moveObject);
     document.removeEventListener('mouseup', this.releaseObject);
     this.grabbedObject = GRABBED_OBJECT.NONE;
+    this.addSmoothHoursRoundingAnimation();
     this.switchToControllableMode();
   };
+
+  addSmoothHoursRoundingAnimation() {
+    this.selectedRange.style.transition = 'left 0.3s ease-out, width 0.3s ease-out';
+    this.startHandle.style.transition = 'left 0.3s ease-out';
+    this.endHandle.style.transition = 'left 0.3s ease-out';
+  }
+
+  removeSmoothHoursRoundingAnimation() {
+    this.selectedRange.style.transition = '';
+    this.startHandle.style.transition = '';
+    this.endHandle.style.transition = '';
+  }
 
   switchToUncontrollableMode = () => {
     const { selectedRange } = this.props;
@@ -224,12 +238,16 @@ class TimeRangeSlider extends React.PureComponent {
     const hoursCount = range.endHour - range.startHour;
     this.setState({ hourWidth: this.sliderWidth / hoursCount });
 
-    this.handleWidth = this.handle.getBoundingClientRect().width;
+    this.handleWidth = this.startHandle.getBoundingClientRect().width;
   }
 
   setSliderRef = slider => (this.slider = slider);
 
-  setHandleRef = handle => (this.handle = handle);
+  setSelectedRangeRef = selectedRange => (this.selectedRange = selectedRange);
+
+  setStartHandleRef = handle => (this.startHandle = handle);
+
+  setEndHandleRef = handle => (this.endHandle = handle);
 
   getHandlesPositionsFromProps() {
     const { selectedRange } = this.props;
@@ -259,16 +277,22 @@ class TimeRangeSlider extends React.PureComponent {
       <div ref={this.setSliderRef} className={classNames('slider', className)}>
         <div
           className='slider-handle'
-          ref={this.setHandleRef}
-          style={{ left: startHandlePosition + POSITION_UNIT }}
+          ref={this.setStartHandleRef}
+          style={{
+            left: startHandlePosition + POSITION_UNIT,
+          }}
           onMouseDown={this.grabStartHandle}
         />
         <div
           className='slider-handle'
-          style={{ left: endHandlePosition + POSITION_UNIT }}
+          ref={this.setEndHandleRef}
+          style={{
+            left: endHandlePosition + POSITION_UNIT,
+          }}
           onMouseDown={this.grabEndHandle}
         />
         <div
+          ref={this.setSelectedRangeRef}
           className='selected-range'
           style={{
             left: selectedRangePosition + POSITION_UNIT,
