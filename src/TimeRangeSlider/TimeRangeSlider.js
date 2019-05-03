@@ -115,25 +115,21 @@ class TimeRangeSlider extends React.PureComponent {
     this.endHandle.style.transition = '';
   }
 
-  switchToUncontrollableMode = () => {
+  switchToUncontrollableMode() {
     const { selectedRange } = this.props;
     this.setState({
       mode: MODE.UNCONTROLLABLE,
       startHandlePosition: this.toSliderPosition(selectedRange.startHour),
       endHandlePosition: this.toSliderPosition(selectedRange.endHour),
     });
-  };
+  }
 
-  switchToControllableMode = () => {
+  switchToControllableMode() {
     this.setState({
       mode: MODE.CONTROLLABLE,
       startHandlePosition: null,
       endHandlePosition: null,
     });
-  };
-
-  pageToSliderPosition(pagePosition) {
-    return pagePosition - this.sliderPageLeftOffset;
   }
 
   moveObject = ({ pageX: cursorPagePosition }) => {
@@ -179,6 +175,10 @@ class TimeRangeSlider extends React.PureComponent {
     this.handleHandlesPositionsChange(newStartHandlePosition, newEndHandlePosition);
   };
 
+  pageToSliderPosition(pagePosition) {
+    return pagePosition - this.sliderPageLeftOffset;
+  }
+
   swapHandlersIfCrossed(startHandlePosition, endHandlePosition) {
     if (startHandlePosition > endHandlePosition) {
       [startHandlePosition, endHandlePosition] = [endHandlePosition, startHandlePosition];
@@ -191,7 +191,7 @@ class TimeRangeSlider extends React.PureComponent {
     return [startHandlePosition, endHandlePosition];
   }
 
-  handleHandlesPositionsChange = (newStartHandlePosition, newEndHandlePosition) => {
+  handleHandlesPositionsChange(newStartHandlePosition, newEndHandlePosition) {
     const {
       startHandlePosition: lastStartHandlePosition,
       endHandlePosition: lastEndHandlePosition,
@@ -213,21 +213,21 @@ class TimeRangeSlider extends React.PureComponent {
       const { onSelectedRangeChange } = this.props;
       onSelectedRangeChange(newSelectedRange);
     }
-  };
+  }
 
-  toHour = sliderPosition => {
+  toHour(sliderPosition) {
     const { range } = this.props;
     const { hourWidth } = this.state;
     const offsetFromStartInHours = sliderPosition / hourWidth;
     return range.startHour + offsetFromStartInHours;
-  };
+  }
 
-  toSliderPosition = hour => {
+  toSliderPosition(hour) {
     const { range } = this.props;
     const { hourWidth } = this.state;
     const offsetFromStartHour = hour - range.startHour;
     return offsetFromStartHour * hourWidth;
-  };
+  }
 
   calculateSliderElementsPositionsLimits() {
     this.minHandlePos = -this.handleWidth / 2;
