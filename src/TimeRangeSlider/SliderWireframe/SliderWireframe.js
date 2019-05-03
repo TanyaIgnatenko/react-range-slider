@@ -36,7 +36,7 @@ function Wireframe({ range, markStep }) {
       )}
       <div className='invisible-time-interval-with-mark-box'>
         <p className='mark-label last'>{toBeautifulTimeString(lastHour + 1)}</p>
-        <div className={classNames('invisible-time-interval with-mark')} />
+        <div className={classNames('time-interval with-mark invisible')} />
       </div>
     </>
   );
