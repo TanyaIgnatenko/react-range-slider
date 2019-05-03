@@ -42,7 +42,9 @@ class TimeRangeSlider extends React.PureComponent {
     className: '',
   };
 
-  grabbedObject = GRABBED_OBJECT.NONE;
+  grabbedObject = {
+    type: GRABBED_OBJECT.NONE,
+  };
 
   state = {
     mode: MODE.CONTROLLABLE,
@@ -67,24 +69,28 @@ class TimeRangeSlider extends React.PureComponent {
     this.calculateSliderElementsPositionsLimits();
   };
 
-  grabStartHandle = () => {
-    this.grabbedObject = GRABBED_OBJECT.FIRST_HANDLE;
-    this.grabObject();
+  grabStartHandle = event => {
+    this.grabbedObject.type = GRABBED_OBJECT.FIRST_HANDLE;
+    this.grabObject(event);
   };
 
-  grabEndHandle = () => {
-    this.grabbedObject = GRABBED_OBJECT.SECOND_HANDLE;
-    this.grabObject();
+  grabEndHandle = event => {
+    this.grabbedObject.type = GRABBED_OBJECT.SECOND_HANDLE;
+    this.grabObject(event);
   };
 
-  grabSelectedRange = () => {
-    this.grabbedObject = GRABBED_OBJECT.SELECTED_RANGE;
-    this.grabObject();
+  grabSelectedRange = event => {
+    this.grabbedObject.type = GRABBED_OBJECT.SELECTED_RANGE;
+    this.grabObject(event);
   };
 
-  grabObject() {
+  grabObject({ target: grabbedObject, pageX: cursorPosition }) {
+    const grabbedObjectLeft = grabbedObject.getBoundingClientRect().left;
+    this.grabbedObject.cursorShiftX = grabbedObjectLeft - cursorPosition;
+
     document.addEventListener('mousemove', this.moveObject);
     document.addEventListener('mouseup', this.releaseObject);
+
     this.removeSmoothHoursRoundingAnimation();
     this.switchToUncontrollableMode();
   }
@@ -92,7 +98,7 @@ class TimeRangeSlider extends React.PureComponent {
   releaseObject = () => {
     document.removeEventListener('mousemove', this.moveObject);
     document.removeEventListener('mouseup', this.releaseObject);
-    this.grabbedObject = GRABBED_OBJECT.NONE;
+    this.grabbedObject.type = GRABBED_OBJECT.NONE;
     this.addSmoothHoursRoundingAnimation();
     this.switchToControllableMode();
   };
@@ -126,17 +132,20 @@ class TimeRangeSlider extends React.PureComponent {
     });
   };
 
-  moveObject = ({ movementX }) => {
+  pageToSliderPosition(pagePosition) {
+    return pagePosition - this.sliderPageLeftOffset;
+  }
+
+  moveObject = ({ pageX: cursorPagePosition }) => {
+    const newPosition =
+      this.pageToSliderPosition(cursorPagePosition) + this.grabbedObject.cursorShiftX;
+
     const { startHandlePosition, endHandlePosition } = this.state;
     let newStartHandlePosition, newEndHandlePosition;
 
-    switch (this.grabbedObject) {
+    switch (this.grabbedObject.type) {
       case GRABBED_OBJECT.FIRST_HANDLE: {
-        newStartHandlePosition = clamp(
-          startHandlePosition + movementX,
-          this.minHandlePos,
-          this.maxHandlePos,
-        );
+        newStartHandlePosition = clamp(newPosition, this.minHandlePos, this.maxHandlePos);
         newEndHandlePosition = endHandlePosition;
 
         [newStartHandlePosition, newEndHandlePosition] = this.swapHandlersIfCrossed(
@@ -146,11 +155,7 @@ class TimeRangeSlider extends React.PureComponent {
         break;
       }
       case GRABBED_OBJECT.SECOND_HANDLE: {
-        newEndHandlePosition = clamp(
-          endHandlePosition + movementX,
-          this.minHandlePos,
-          this.maxHandlePos,
-        );
+        newEndHandlePosition = clamp(newPosition, this.minHandlePos, this.maxHandlePos);
         newStartHandlePosition = startHandlePosition;
 
         [newStartHandlePosition, newEndHandlePosition] = this.swapHandlersIfCrossed(
@@ -161,7 +166,7 @@ class TimeRangeSlider extends React.PureComponent {
       }
       case GRABBED_OBJECT.SELECTED_RANGE: {
         const newSelectedRangeStartPosition = clamp(
-          startHandlePosition + movementX,
+          newPosition,
           this.minSelectedRangePos,
           this.maxSelectedRangePos,
         );
@@ -232,7 +237,9 @@ class TimeRangeSlider extends React.PureComponent {
   }
 
   measureElementsSize() {
-    this.sliderWidth = this.slider.getBoundingClientRect().width;
+    const { width, left } = this.slider.getBoundingClientRect();
+    this.sliderWidth = width;
+    this.sliderPageLeftOffset = left;
 
     const { range } = this.props;
     const hoursCount = range.endHour - range.startHour;
@@ -274,7 +281,7 @@ class TimeRangeSlider extends React.PureComponent {
     this.selectedRangeLength = endHandlePosition - startHandlePosition;
 
     return (
-      <div ref={this.setSliderRef} className={classNames('slider', className)}>
+      <div ref={this.setSliderRef} className={classNames('slider-box', className)}>
         <div
           className='slider-handle'
           ref={this.setStartHandleRef}

@@ -8,10 +8,9 @@ const HOURS_IN_DAY = 24;
 
 const toBeautifulTimeString = hour => `${hour < HOURS_IN_DAY ? hour : hour - HOURS_IN_DAY}:00`;
 
-function Wireframe({ range, markStep }) {
+function Wireframe({ range, markStep, sliderRef }) {
   const hoursRange = makeRange(range.startHour, range.endHour);
   const lastHour = hoursRange[hoursRange.length - 1];
-  console.log('hoursRange: ', hoursRange);
 
   const isMarkStep = step => step % markStep === 0;
   const isFirstStep = step => step === 0;
@@ -36,7 +35,7 @@ function Wireframe({ range, markStep }) {
       )}
       <div className='invisible-time-interval-with-mark-box'>
         <p className='mark-label last'>{toBeautifulTimeString(lastHour + 1)}</p>
-        <div className={classNames('time-interval with-mark invisible')} />
+        <div className={classNames('invisible-time-interval with-mark')} />
       </div>
     </>
   );
