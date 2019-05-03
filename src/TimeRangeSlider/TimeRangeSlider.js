@@ -144,7 +144,7 @@ class TimeRangeSlider extends React.PureComponent {
         newStartHandlePosition = clamp(newPosition, this.minHandlePos, this.maxHandlePos);
         newEndHandlePosition = endHandlePosition;
 
-        [newStartHandlePosition, newEndHandlePosition] = this.swapHandlersIfCrossed(
+        [newStartHandlePosition, newEndHandlePosition] = this.swapHandlesIfCrossed(
           newStartHandlePosition,
           newEndHandlePosition,
         );
@@ -154,7 +154,7 @@ class TimeRangeSlider extends React.PureComponent {
         newEndHandlePosition = clamp(newPosition, this.minHandlePos, this.maxHandlePos);
         newStartHandlePosition = startHandlePosition;
 
-        [newStartHandlePosition, newEndHandlePosition] = this.swapHandlersIfCrossed(
+        [newStartHandlePosition, newEndHandlePosition] = this.swapHandlesIfCrossed(
           newStartHandlePosition,
           newEndHandlePosition,
         );
@@ -179,12 +179,12 @@ class TimeRangeSlider extends React.PureComponent {
     return pagePosition - this.sliderPageLeftOffset;
   }
 
-  swapHandlersIfCrossed(startHandlePosition, endHandlePosition) {
+  swapHandlesIfCrossed(startHandlePosition, endHandlePosition) {
     if (startHandlePosition > endHandlePosition) {
       [startHandlePosition, endHandlePosition] = [endHandlePosition, startHandlePosition];
 
-      this.grabbedObject =
-        this.grabbedObject === GRABBED_OBJECT.FIRST_HANDLE
+      this.grabbedObject.type =
+        this.grabbedObject.type === GRABBED_OBJECT.FIRST_HANDLE
           ? GRABBED_OBJECT.SECOND_HANDLE
           : GRABBED_OBJECT.FIRST_HANDLE;
     }
