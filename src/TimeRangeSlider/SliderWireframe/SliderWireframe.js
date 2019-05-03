@@ -4,24 +4,20 @@ import classNames from 'classnames';
 
 import { range as makeRange } from '../../utils/array';
 
-const HOURS_IN_DAY = 24;
-
-const toBeautifulTimeString = hour => `${hour < HOURS_IN_DAY ? hour : hour - HOURS_IN_DAY}:00`;
-
-function Wireframe({ range, markStep, sliderRef }) {
-  const hoursRange = makeRange(range.startHour, range.endHour);
-  const lastHour = hoursRange[hoursRange.length - 1];
+function Wireframe({ range, timeUnitMinutes, formatLabel, markStep }) {
+  const timeUnitsRange = makeRange(range.start, range.end, timeUnitMinutes);
+  const lastTimeUnit = range.end;
 
   const isMarkStep = step => step % markStep === 0;
   const isFirstStep = step => step === 0;
 
   return (
     <>
-      {hoursRange.map((hour, step) =>
+      {timeUnitsRange.map((timeUnit, step) =>
         isMarkStep(step) ? (
           <div className='time-interval-with-mark-box'>
             <p className={classNames('mark-label', { first: isFirstStep(step) })}>
-              {toBeautifulTimeString(hour)}
+              {formatLabel(timeUnit)}
             </p>
             <div
               className={classNames('time-interval with-mark', {
@@ -34,7 +30,7 @@ function Wireframe({ range, markStep, sliderRef }) {
         ),
       )}
       <div className='invisible-time-interval-with-mark-box'>
-        <p className='mark-label last'>{toBeautifulTimeString(lastHour + 1)}</p>
+        <p className='mark-label last'>{formatLabel(lastTimeUnit)}</p>
         <div className={classNames('invisible-time-interval with-mark')} />
       </div>
     </>
@@ -43,9 +39,11 @@ function Wireframe({ range, markStep, sliderRef }) {
 
 Wireframe.propTypes = {
   range: PropTypes.shape({
-    startHour: PropTypes.number.isRequired,
-    endHour: PropTypes.number.isRequired,
+    start: PropTypes.number.isRequired,
+    end: PropTypes.number.isRequired,
   }).isRequired,
+  timeUnitMinutes: PropTypes.number.isRequired,
+  formatLabel: PropTypes.func.isRequired,
   markStep: PropTypes.number,
 };
 

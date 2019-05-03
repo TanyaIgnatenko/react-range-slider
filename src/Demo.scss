@@ -6,8 +6,13 @@ html {
 
   .app-container {
     display: flex;
+    flex-direction: column;
     box-sizing: border-box;
     width: 50vw;
     margin: 40px;
+
+    .time-range-slider {
+      margin-top: 100px;
+    }
   }
 }
