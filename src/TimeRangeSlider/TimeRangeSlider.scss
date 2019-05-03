@@ -2,40 +2,28 @@
   position: relative;
 
   display: flex;
-  flex-shrink: 0;
-  flex-grow: 0;
-  align-items: flex-end;
+  width: 100%;
 
   .time-interval {
-    z-index: -1;
-
-    width: 21px;
+    flex-grow: 1;
     height: 6px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-right: none;
 
     background-color: white;
-
-    &.selected {
-      border: 1px solid #e7c100;
-      border-right: none;
-
-      background-color: #fee8a4;
-    }
+    border: 1px solid rgb(198, 198, 198);
+    border-right: none;
   }
 
   .time-interval-with-mark-box {
+    flex-grow: 1;
     position: relative;
 
     .mark-label {
       position: absolute;
-      top: -35px;
-      left: -12px;
+      top: -4.5rem;
+      left: -1.7rem;
 
-      margin-bottom: 8px;
-      margin-left: 15.7%;
-
-      font-size: 11px;
+      font-family: Arial, sans-serif;
+      font-size: 1.5rem;
     }
 
     .time-interval.with-mark {
@@ -43,42 +31,57 @@
 
       &:after {
         position: absolute;
-        top: -3.5px;
+        top: -.35rem;
 
-        width: 1px;
-        height: 13px;
+        width: .1rem;
+        height: 1.3rem;
 
         content: '';
-        border-left: 1px solid #d4d4d4;
+        border-left: 1px solid rgb(212, 212, 212);
       }
 
       &.first:after {
-        border-left: 2px solid #d4d4d4;
+        border-left: 2px solid rgb(212, 212, 212);
       }
     }
+  }
+
+    .invisible-time-interval-with-mark-box {
+      position: relative;
+      flex-grow: 0;
+
+      .mark-label {
+        position: absolute;
+        top: -4.5rem;
+        left: -0.9rem;
+
+        font-family: Arial, sans-serif;
+        font-size: 1.5rem;
+      }
 
     .invisible-time-interval.with-mark {
-      height: 6px;
+      flex-grow: 0;
+      width: 0;
+      height: 0;
 
       &:after {
         position: absolute;
-        top: -3.5px;
+        top: -.35rem;
 
-        width: 1px;
-        height: 13px;
+        height: 1.3rem;
 
         content: '';
-        border-left: 1px solid rgba(0, 0, 0, 0.2);
+        border-left: 1px solid rgb(212, 212, 212);;
       }
     }
   }
 
   .selected-range {
     position: absolute;
-    z-index: 1000;
+    z-index: 1;
 
-    height: 6px;
-    border: 1px solid rgba(231, 197, 0, 1);
+    height: .6rem;
+    border: 1px solid #e7c100;
     border-right: none;
 
     background-color: rgba(255, 222, 65, 0.4);
@@ -89,8 +92,8 @@
     position: absolute;
     top: -8px;
 
-    width: 14px;
-    height: 20px;
+    width: 1.4rem;
+    height: 2rem;
 
     background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.1);

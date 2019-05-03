@@ -1,5 +1,13 @@
-.app-container {
-  display: flex;
-  margin-top: 50px;
-  margin-left: 50px;
+html {
+  margin: 0;
+  padding: 0;
+
+  font-size: 62.5%;
+
+  .app-container {
+    display: flex;
+    box-sizing: border-box;
+    width: 50vw;
+    margin: 40px;
+  }
 }

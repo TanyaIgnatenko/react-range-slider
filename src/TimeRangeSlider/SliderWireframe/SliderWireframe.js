@@ -6,12 +6,12 @@ import { range as makeRange } from '../../utils/array';
 
 const HOURS_IN_DAY = 24;
 
-const toBeautifulTimeString = hour =>
-  `${hour < HOURS_IN_DAY ? hour : hour - HOURS_IN_DAY}:00`;
+const toBeautifulTimeString = hour => `${hour < HOURS_IN_DAY ? hour : hour - HOURS_IN_DAY}:00`;
 
-function SliderWireframe({ range, markStep }) {
+function Wireframe({ range, markStep }) {
   const hoursRange = makeRange(range.startHour, range.endHour);
   const lastHour = hoursRange[hoursRange.length - 1];
+  console.log('hoursRange: ', hoursRange);
 
   const isMarkStep = step => step % markStep === 0;
   const isFirstStep = step => step === 0;
@@ -21,7 +21,9 @@ function SliderWireframe({ range, markStep }) {
       {hoursRange.map((hour, step) =>
         isMarkStep(step) ? (
           <div className='time-interval-with-mark-box'>
-            <p className='mark-label'>{toBeautifulTimeString(hour)}</p>
+            <p className={classNames('mark-label', { first: isFirstStep(step) })}>
+              {toBeautifulTimeString(hour)}
+            </p>
             <div
               className={classNames('time-interval with-mark', {
                 first: isFirstStep(step),
@@ -32,15 +34,15 @@ function SliderWireframe({ range, markStep }) {
           <div className={classNames('time-interval')} />
         ),
       )}
-      <div className='time-interval-with-mark-box'>
-        <p className='mark-label'>{toBeautifulTimeString(lastHour + 1)}</p>
+      <div className='invisible-time-interval-with-mark-box'>
+        <p className='mark-label last'>{toBeautifulTimeString(lastHour + 1)}</p>
         <div className={classNames('invisible-time-interval with-mark')} />
       </div>
     </>
   );
 }
 
-SliderWireframe.propTypes = {
+Wireframe.propTypes = {
   range: PropTypes.shape({
     startHour: PropTypes.number.isRequired,
     endHour: PropTypes.number.isRequired,
@@ -48,8 +50,8 @@ SliderWireframe.propTypes = {
   markStep: PropTypes.number,
 };
 
-SliderWireframe.defaultProps = {
+Wireframe.defaultProps = {
   markStep: 4,
 };
 
-export default SliderWireframe;
+export default Wireframe;
