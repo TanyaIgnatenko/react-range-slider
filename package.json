@@ -1,6 +1,7 @@
 {
   "name": "react-time-range-slider",
   "version": "0.1.0",
+  "homepage" : "https://tanyaignatenko.github.io/react-range-slider/",
   "private": true,
   "dependencies": {
     "classnames": "^2.2.6",
