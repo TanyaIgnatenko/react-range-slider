@@ -234,7 +234,7 @@ class TimeRangeSlider extends React.PureComponent {
     const { timeUnitWidth } = this.state;
     const offsetFromStartInMinutes = minutes - range.start;
     const offsetFromStartInTimeUnits = offsetFromStartInMinutes / timeUnitMinutes;
-    return offsetFromStartInTimeUnits * timeUnitWidth;
+    return offsetFromStartInTimeUnits * timeUnitWidth + this.minHandlePos;
   }
 
   calculateSliderElementsPositionsLimits() {
