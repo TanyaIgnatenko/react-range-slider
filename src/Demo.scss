@@ -10,9 +10,49 @@ html {
     box-sizing: border-box;
     width: 50vw;
     margin-left: 40px;
+    margin-bottom: 40px;
+
+    .app-link-container {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 2rem;
+
+      background-color: rgba(211, 211, 211, 0.2);
+      border-radius: 10px;
+      text-decoration: none;
+
+      .github-icon {
+        width: 80px;
+        height: 80px;
+
+        margin-right: 2rem;
+      }
+    }
 
     .range-slider {
-      margin-top: 100px;
+      margin-top: 95px;
+      margin-left: 15px;
+    }
+
+    .title {
+      color: #282828;
+      font-family: Roboto, sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .sub-title {
+      margin-bottom: -35px;
+
+      color: #212121;
+      font-family: Roboto, sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+
+      &:not(:first-of-type) {
+        margin-top: 40px;
+      }
     }
   }
 }
