@@ -4,6 +4,8 @@ import classNames from 'classnames';
 
 import { range as makeRange } from '../utils/array';
 
+import './SliderWireframe.scss';
+
 function Wireframe({ min, max, valuePerStep, formatLabel, labelMarkStep }) {
   const rangeUnits = makeRange(min, max, valuePerStep);
   const lastUnit = max;
@@ -41,6 +43,7 @@ Wireframe.propTypes = {
   min: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
   formatLabel: PropTypes.func.isRequired,
+  valuePerStep: PropTypes.number.isRequired,
   labelMarkStep: PropTypes.number,
 };
 

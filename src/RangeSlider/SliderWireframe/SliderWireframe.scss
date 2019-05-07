@@ -1,0 +1,71 @@
+.time-interval {
+  flex-grow: 1;
+  height: 6px;
+
+  background-color: white;
+  border: 1px solid rgb(198, 198, 198);
+  border-right: none;
+}
+
+.time-interval-with-mark-box {
+  flex-grow: 1;
+  position: relative;
+
+  .mark-label {
+    position: absolute;
+    top: -4.5rem;
+    left: -1.7rem;
+
+    font-family: Arial, sans-serif;
+    font-size: 1.5rem;
+  }
+
+  .time-interval.with-mark {
+    border-left: none;
+
+    &:after {
+      position: absolute;
+      top: -3px;
+
+      width: 1px;
+      height: 13px;
+
+      content: '';
+      border-left: 1px solid rgb(212, 212, 212);
+    }
+
+    &.first:after {
+      border-left: 2px solid rgb(212, 212, 212);
+    }
+  }
+}
+
+.invisible-time-interval-with-mark-box {
+  position: relative;
+  flex-grow: 0;
+
+  .mark-label {
+    position: absolute;
+    top: -45px;
+    left: -9px;
+
+    font-family: Arial, sans-serif;
+    font-size: 1.5rem;
+  }
+
+  .invisible-time-interval.with-mark {
+    flex-grow: 0;
+    width: 0;
+    height: 0;
+
+    &:after {
+      position: absolute;
+      top: -3px;
+
+      height: 13px;
+
+      content: '';
+      border-left: 1px solid rgb(212, 212, 212);;
+    }
+  }
+}

@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
+import './Handle.scss';
+
 const CSS_UNIT = '%';
 
 class Handle extends React.Component {
