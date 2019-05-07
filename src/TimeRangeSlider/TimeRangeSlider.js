@@ -50,8 +50,10 @@ class TimeRangeSlider extends React.Component {
 
   state = {
     mode: MODE.CONTROLLABLE,
-    startHandlePosition: null,
-    endHandlePosition: null,
+    selectedRange: {
+      start: null,
+      end: null,
+    },
     timeUnitWidth: null,
   };
 
@@ -205,24 +207,17 @@ class TimeRangeSlider extends React.Component {
   }
 
   handleHandlesPositionsChange(newStartHandlePosition, newEndHandlePosition) {
-    const {
-      startHandlePosition: lastStartHandlePosition,
-      endHandlePosition: lastEndHandlePosition,
-    } = this.state;
+    const { selectedRange } = this.state;
+    const newSelectedRange = {
+      start: this.positionToMinutes(newStartHandlePosition),
+      end: this.positionToMinutes(newEndHandlePosition),
+    };
 
-    if (
-      newStartHandlePosition !== lastStartHandlePosition ||
-      newEndHandlePosition !== lastEndHandlePosition
-    ) {
+    if (!_.isEqual(selectedRange, newSelectedRange)) {
       this.setState({
-        startHandlePosition: newStartHandlePosition,
-        endHandlePosition: newEndHandlePosition,
+        selectedRange: newSelectedRange,
       });
 
-      const newSelectedRange = {
-        start: this.positionToMinutes(newStartHandlePosition),
-        end: this.positionToMinutes(newEndHandlePosition),
-      };
       const { onChange } = this.props;
       onChange(newSelectedRange);
     }
@@ -269,15 +264,15 @@ class TimeRangeSlider extends React.Component {
 
   setEndHandleRef = handle => (this.endHandle = handle);
 
-  getHandlesPositionsFromProps() {
-    const { selectedRange } = this.props;
+  getHandlesPositions() {
+    const { mode } = this.state;
+
+    const selectedRange =
+      mode === MODE.CONTROLLABLE ? this.props.selectedRange : this.state.selectedRange;
+
     const startHandlePosition = this.minutesToSliderPosition(selectedRange.start);
     const endHandlePosition = this.minutesToSliderPosition(selectedRange.end);
-    return [startHandlePosition, endHandlePosition];
-  }
 
-  getHandlesPositionsFromState() {
-    const { startHandlePosition, endHandlePosition } = this.state;
     return [startHandlePosition, endHandlePosition];
   }
 
@@ -292,13 +287,7 @@ class TimeRangeSlider extends React.Component {
       className,
     } = this.props;
 
-    const { mode } = this.state;
-
-    const [startHandlePosition, endHandlePosition] =
-      mode === MODE.CONTROLLABLE
-        ? this.getHandlesPositionsFromProps()
-        : this.getHandlesPositionsFromState();
-
+    const [startHandlePosition, endHandlePosition] = this.getHandlesPositions();
     const selectedRangePosition = startHandlePosition;
     this.selectedRangeLength = endHandlePosition - startHandlePosition;
 
