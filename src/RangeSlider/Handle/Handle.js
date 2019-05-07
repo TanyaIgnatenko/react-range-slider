@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { clamp } from '../utils/clamp';
+import _ from 'lodash';
 
 const CSS_UNIT = '%';
 
@@ -39,7 +39,7 @@ class Handle extends React.Component {
     const { pagePositionToNormalizedValue: normalizeValue } = this.props;
 
     const normalizedValue = normalizeValue(cursorPagePosition - this.cursorShift);
-    const newValue = clamp(normalizedValue, 0, 1);
+    const newValue = _.clamp(normalizedValue, 0, 1);
 
     if (newValue !== oldValue) {
       onChange(newValue);

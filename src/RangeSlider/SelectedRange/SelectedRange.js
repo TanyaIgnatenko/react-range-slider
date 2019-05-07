@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import { clamp } from '../utils/clamp';
-
 const CSS_UNIT = '%';
 
 class SelectedRange extends React.Component {
@@ -49,8 +47,8 @@ class SelectedRange extends React.Component {
     const newNormalizedRangeEnd = newNormalizedRangeStart + normalizedRangeLength;
 
     const newNormalizedRange = {
-      start: clamp(newNormalizedRangeStart, 0, 1 - normalizedRangeLength),
-      end: clamp(newNormalizedRangeEnd, normalizedRangeLength, 1),
+      start: _.clamp(newNormalizedRangeStart, 0, 1 - normalizedRangeLength),
+      end: _.clamp(newNormalizedRangeEnd, normalizedRangeLength, 1),
     };
 
     if (!_.isEqual(newNormalizedRange, normalizedRange)) {
