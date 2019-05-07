@@ -2,22 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { range as makeRange } from '../../utils/array';
+import { range as makeRange } from '../utils/array';
 
-function Wireframe({ min, max, minutesPerTimeUnit, formatLabel, labelMarkStep }) {
-  const timeUnitsRange = makeRange(min, max, minutesPerTimeUnit);
-  const lastTimeUnit = max;
+function Wireframe({ min, max, valuePerStep, formatLabel, labelMarkStep }) {
+  const rangeUnits = makeRange(min, max, valuePerStep);
+  const lastUnit = max;
 
   const islabelMarkStep = step => step % labelMarkStep === 0;
   const isFirstStep = step => step === 0;
 
   return (
     <>
-      {timeUnitsRange.map((timeUnit, step) =>
+      {rangeUnits.map((unit, step) =>
         islabelMarkStep(step) ? (
           <div className='time-interval-with-mark-box'>
             <p className={classNames('mark-label', { first: isFirstStep(step) })}>
-              {formatLabel(timeUnit)}
+              {formatLabel(unit)}
             </p>
             <div
               className={classNames('time-interval with-mark', {
@@ -30,7 +30,7 @@ function Wireframe({ min, max, minutesPerTimeUnit, formatLabel, labelMarkStep })
         ),
       )}
       <div className='invisible-time-interval-with-mark-box'>
-        <p className='mark-label last'>{formatLabel(lastTimeUnit)}</p>
+        <p className='mark-label last'>{formatLabel(lastUnit)}</p>
         <div className={classNames('invisible-time-interval with-mark')} />
       </div>
     </>
@@ -40,7 +40,6 @@ function Wireframe({ min, max, minutesPerTimeUnit, formatLabel, labelMarkStep })
 Wireframe.propTypes = {
   min: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
-  minutesPerTimeUnit: PropTypes.number.isRequired,
   formatLabel: PropTypes.func.isRequired,
   labelMarkStep: PropTypes.number,
 };
