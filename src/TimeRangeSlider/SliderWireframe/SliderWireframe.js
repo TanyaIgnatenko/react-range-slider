@@ -4,17 +4,17 @@ import classNames from 'classnames';
 
 import { range as makeRange } from '../../utils/array';
 
-function Wireframe({ range, timeUnitMinutes, formatLabel, markStep }) {
-  const timeUnitsRange = makeRange(range.start, range.end, timeUnitMinutes);
-  const lastTimeUnit = range.end;
+function Wireframe({ min, max, minutesPerTimeUnit, formatLabel, labelMarkStep }) {
+  const timeUnitsRange = makeRange(min, max, minutesPerTimeUnit);
+  const lastTimeUnit = max;
 
-  const isMarkStep = step => step % markStep === 0;
+  const islabelMarkStep = step => step % labelMarkStep === 0;
   const isFirstStep = step => step === 0;
 
   return (
     <>
       {timeUnitsRange.map((timeUnit, step) =>
-        isMarkStep(step) ? (
+        islabelMarkStep(step) ? (
           <div className='time-interval-with-mark-box'>
             <p className={classNames('mark-label', { first: isFirstStep(step) })}>
               {formatLabel(timeUnit)}
@@ -38,17 +38,15 @@ function Wireframe({ range, timeUnitMinutes, formatLabel, markStep }) {
 }
 
 Wireframe.propTypes = {
-  range: PropTypes.shape({
-    start: PropTypes.number.isRequired,
-    end: PropTypes.number.isRequired,
-  }).isRequired,
-  timeUnitMinutes: PropTypes.number.isRequired,
+  min: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
+  minutesPerTimeUnit: PropTypes.number.isRequired,
   formatLabel: PropTypes.func.isRequired,
-  markStep: PropTypes.number,
+  labelMarkStep: PropTypes.number,
 };
 
 Wireframe.defaultProps = {
-  markStep: 4,
+  labelMarkStep: 4,
 };
 
 export default Wireframe;

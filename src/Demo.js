@@ -53,46 +53,51 @@ function Demo() {
   return (
     <div className='app-container'>
       <TimeRangeSlider
-        range={FIRST_TIME_SLIDER_RANGE}
-        timeUnitMinutes={60}
+        min={FIRST_TIME_SLIDER_RANGE.start}
+        max={FIRST_TIME_SLIDER_RANGE.end}
+        minutesPerTimeUnit={60}
         selectedRange={firstSelectedRange}
-        onSelectedRangeChange={setFirstSelectedRange}
+        onChange={setFirstSelectedRange}
         formatLabel={toTimeLabel}
         className='time-range-slider'
       />
       <TimeRangeSlider
-        range={THIRD_TIME_SLIDER_RANGE}
-        timeUnitMinutes={15}
-        markStep={1}
-        selectedRange={thirdSelectedRange}
-        onSelectedRangeChange={setThirdSelectedRange}
-        formatLabel={toTimeLabel}
-        className='time-range-slider'
-      />
-      <TimeRangeSlider
-        range={SECOND_TIME_SLIDER_RANGE}
-        timeUnitMinutes={30}
-        markStep={1}
+        min={SECOND_TIME_SLIDER_RANGE.start}
+        max={SECOND_TIME_SLIDER_RANGE.end}
+        minutesPerTimeUnit={30}
+        labelMarkStep={1}
         selectedRange={secondSelectedRange}
-        onSelectedRangeChange={setSecondSelectedRange}
+        onChange={setSecondSelectedRange}
         formatLabel={toTimeLabel}
         className='time-range-slider'
       />
       <TimeRangeSlider
-        range={FOURTH_TIME_SLIDER_RANGE}
-        timeUnitMinutes={15}
-        markStep={2}
+        min={THIRD_TIME_SLIDER_RANGE.start}
+        max={THIRD_TIME_SLIDER_RANGE.end}
+        minutesPerTimeUnit={15}
+        labelMarkStep={1}
+        selectedRange={thirdSelectedRange}
+        onChange={setThirdSelectedRange}
+        formatLabel={toTimeLabel}
+        className='time-range-slider'
+      />
+      <TimeRangeSlider
+        min={FOURTH_TIME_SLIDER_RANGE.start}
+        max={FOURTH_TIME_SLIDER_RANGE.end}
+        minutesPerTimeUnit={15}
+        labelMarkStep={2}
         selectedRange={fourthSelectedRange}
-        onSelectedRangeChange={setFourthSelectedRange}
+        onChange={setFourthSelectedRange}
         formatLabel={toTimeLabel}
         className='time-range-slider'
       />
       <TimeRangeSlider
-        range={FIFTH_TIME_SLIDER_RANGE}
-        timeUnitMinutes={30}
-        markStep={3}
+        min={FIFTH_TIME_SLIDER_RANGE.start}
+        max={FIFTH_TIME_SLIDER_RANGE.end}
+        minutesPerTimeUnit={30}
+        labelMarkStep={3}
         selectedRange={fifthSelectedRange}
-        onSelectedRangeChange={setFifthSelectedRange}
+        onChange={setFifthSelectedRange}
         formatLabel={toTimeLabel}
         className='time-range-slider'
       />

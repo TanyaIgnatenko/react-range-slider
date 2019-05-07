@@ -18,35 +18,33 @@ const GRABBED_OBJECT = {
   SELECTED_RANGE: 'SELECTED_RANGE',
 };
 
-const POSITION_UNIT = 'px';
+const CSS_UNIT = 'px';
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
 class TimeRangeSlider extends React.PureComponent {
   static propTypes = {
-    range: PropTypes.shape({
-      start: PropTypes.number.isRequired,
-      end: PropTypes.number.isRequired,
-    }).isRequired,
-    timeUnitMinutes: PropTypes.number,
+    min: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired,
+    minutesPerTimeUnit: PropTypes.number.isRequired,
     selectedRange: PropTypes.shape({
       start: PropTypes.number.isRequired,
       end: PropTypes.number.isRequired,
     }).isRequired,
-    onSelectedRangeChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
     formatLabel: PropTypes.func.isRequired,
-    markStep: PropTypes.number,
+    labelMarkStep: PropTypes.number,
     className: PropTypes.string,
   };
 
   static defaultProps = {
-    timeUnitMinutes: 15,
-    markStep: 4,
+    labelMarkStep: 4,
     className: '',
   };
 
   grabbedObject = {
     type: GRABBED_OBJECT.NONE,
+    cursorShiftX: null,
   };
 
   state = {
@@ -87,9 +85,9 @@ class TimeRangeSlider extends React.PureComponent {
     this.grabObject(event);
   };
 
-  grabObject({ target: grabbedObject, pageX: cursorPosition }) {
+  grabObject({ target: grabbedObject, pageX: cursorX }) {
     const grabbedObjectLeft = grabbedObject.getBoundingClientRect().left;
-    this.grabbedObject.cursorShiftX = grabbedObjectLeft - cursorPosition;
+    this.grabbedObject.cursorShiftX = cursorX - grabbedObjectLeft;
 
     document.addEventListener('mousemove', this.moveObject);
     document.addEventListener('mouseup', this.releaseObject);
@@ -123,8 +121,8 @@ class TimeRangeSlider extends React.PureComponent {
     const { selectedRange } = this.props;
     this.setState({
       mode: MODE.UNCONTROLLABLE,
-      startHandlePosition: this.toSliderPosition(selectedRange.start),
-      endHandlePosition: this.toSliderPosition(selectedRange.end),
+      startHandlePosition: this.minutesToSliderPosition(selectedRange.start),
+      endHandlePosition: this.minutesToSliderPosition(selectedRange.end),
     });
   }
 
@@ -138,7 +136,7 @@ class TimeRangeSlider extends React.PureComponent {
 
   moveObject = ({ pageX: cursorPagePosition }) => {
     const newPosition =
-      this.pageToSliderPosition(cursorPagePosition) + this.grabbedObject.cursorShiftX;
+      this.pageToSliderPosition(cursorPagePosition) - this.grabbedObject.cursorShiftX;
 
     const { startHandlePosition, endHandlePosition } = this.state;
     let newStartHandlePosition, newEndHandlePosition;
@@ -211,30 +209,30 @@ class TimeRangeSlider extends React.PureComponent {
       });
 
       const newSelectedRange = {
-        start: this.toMinutes(newStartHandlePosition),
-        end: this.toMinutes(newEndHandlePosition),
+        start: this.positionToMinutes(newStartHandlePosition),
+        end: this.positionToMinutes(newEndHandlePosition),
       };
-      const { onSelectedRangeChange } = this.props;
-      onSelectedRangeChange(newSelectedRange);
+      const { onChange } = this.props;
+      onChange(newSelectedRange);
     }
   }
 
-  toTimeUnit(sliderPosition) {
+  positionToTimeUnit(sliderPosition) {
     const { timeUnitWidth } = this.state;
     return Math.round(sliderPosition / timeUnitWidth);
   }
 
-  toMinutes(sliderPosition) {
-    const { range, timeUnitMinutes } = this.props;
-    const timeUnit = this.toTimeUnit(sliderPosition);
-    return range.start + timeUnit * timeUnitMinutes;
+  positionToMinutes(sliderPosition) {
+    const { min, minutesPerTimeUnit } = this.props;
+    const timeUnit = this.positionToTimeUnit(sliderPosition);
+    return min + timeUnit * minutesPerTimeUnit;
   }
 
-  toSliderPosition(minutes) {
-    const { range, timeUnitMinutes } = this.props;
+  minutesToSliderPosition(minutes) {
+    const { min, minutesPerTimeUnit } = this.props;
     const { timeUnitWidth } = this.state;
-    const offsetFromStartInMinutes = minutes - range.start;
-    const offsetFromStartInTimeUnits = offsetFromStartInMinutes / timeUnitMinutes;
+    const offsetFromStartInMinutes = minutes - min;
+    const offsetFromStartInTimeUnits = offsetFromStartInMinutes / minutesPerTimeUnit;
     return offsetFromStartInTimeUnits * timeUnitWidth + this.minHandlePos;
   }
 
@@ -250,8 +248,10 @@ class TimeRangeSlider extends React.PureComponent {
     this.sliderWidth = width;
     this.sliderPageLeftOffset = left;
 
-    const { range, timeUnitMinutes } = this.props;
-    const timeUnitsCount = (range.end - range.start) / timeUnitMinutes;
+    const { min, max, minutesPerTimeUnit } = this.props;
+    const timeUnitsCount = (max - min) / minutesPerTimeUnit;
+
+    // timeUnitWidth change should trigger rerender to recalculate slider handles positions
     this.setState({ timeUnitWidth: this.sliderWidth / timeUnitsCount });
 
     this.handleWidth = this.startHandle.getBoundingClientRect().width;
@@ -267,8 +267,8 @@ class TimeRangeSlider extends React.PureComponent {
 
   getHandlesPositionsFromProps() {
     const { selectedRange } = this.props;
-    const startHandlePosition = this.toSliderPosition(selectedRange.start);
-    const endHandlePosition = this.toSliderPosition(selectedRange.end);
+    const startHandlePosition = this.minutesToSliderPosition(selectedRange.start);
+    const endHandlePosition = this.minutesToSliderPosition(selectedRange.end);
     return [startHandlePosition, endHandlePosition];
   }
 
@@ -278,7 +278,16 @@ class TimeRangeSlider extends React.PureComponent {
   }
 
   render() {
-    const { range, timeUnitMinutes, selectedRange, formatLabel, markStep, className } = this.props;
+    const {
+      min,
+      max,
+      selectedRange,
+      minutesPerTimeUnit,
+      formatLabel,
+      labelMarkStep,
+      className,
+    } = this.props;
+
     const { mode } = this.state;
 
     const [startHandlePosition, endHandlePosition] =
@@ -295,7 +304,7 @@ class TimeRangeSlider extends React.PureComponent {
           className='slider-handle'
           ref={this.setStartHandleRef}
           style={{
-            left: startHandlePosition + POSITION_UNIT,
+            left: startHandlePosition + CSS_UNIT,
           }}
           onMouseDown={this.grabStartHandle}
         />
@@ -303,7 +312,7 @@ class TimeRangeSlider extends React.PureComponent {
           className='slider-handle'
           ref={this.setEndHandleRef}
           style={{
-            left: endHandlePosition + POSITION_UNIT,
+            left: endHandlePosition + CSS_UNIT,
           }}
           onMouseDown={this.grabEndHandle}
         />
@@ -311,15 +320,16 @@ class TimeRangeSlider extends React.PureComponent {
           ref={this.setSelectedRangeRef}
           className='selected-range'
           style={{
-            left: selectedRangePosition + POSITION_UNIT,
-            width: this.selectedRangeLength + POSITION_UNIT,
+            left: selectedRangePosition + CSS_UNIT,
+            width: this.selectedRangeLength + CSS_UNIT,
           }}
           onMouseDown={this.grabSelectedRange}
         />
         <SliderWireframe
-          markStep={markStep}
-          range={range}
-          timeUnitMinutes={timeUnitMinutes}
+          min={min}
+          max={max}
+          labelMarkStep={labelMarkStep}
+          minutesPerTimeUnit={minutesPerTimeUnit}
           selectedRange={selectedRange}
           formatLabel={formatLabel}
         />
