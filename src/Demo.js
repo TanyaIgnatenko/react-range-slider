@@ -91,70 +91,81 @@ function Demo() {
         <h1 className='title'>react-range-slider</h1>
       </a>
 
-      <h2 className='sub-title'>Price</h2>
-      <RangeSlider
-        min={PRICE_SLIDER_RANGE.start}
-        max={PRICE_SLIDER_RANGE.end}
-        valuePerStep={100}
-        labelMarkStep={5}
-        selectedRange={priceSelectedRange}
-        onChange={setPriceSelectedRange}
-        formatLabel={toPriceLabel}
-        className='range-slider'
-      />
-      <h2 className='sub-title'>Years</h2>
-      <RangeSlider
-        min={YEAR_SLIDER_RANGE.start}
-        max={YEAR_SLIDER_RANGE.end}
-        valuePerStep={1}
-        labelMarkStep={1}
-        selectedRange={yearSelectedRange}
-        onChange={setYearSelectedRange}
-        formatLabel={toYearLabel}
-        className='range-slider'
-      />
+      <div className='usage-examples'>
+        <div className='category-examples-container'>
+          <h2 className='sub-title'>Price</h2>
+          <RangeSlider
+            min={PRICE_SLIDER_RANGE.start}
+            max={PRICE_SLIDER_RANGE.end}
+            valuePerStep={100}
+            labelMarkStep={5}
+            selectedRange={priceSelectedRange}
+            onChange={setPriceSelectedRange}
+            formatLabel={toPriceLabel}
+            className='range-slider'
+          />
+        </div>
+        <div className='category-examples-container'>
+          <h2 className='sub-title'>Years</h2>
+          <RangeSlider
+            min={YEAR_SLIDER_RANGE.start}
+            max={YEAR_SLIDER_RANGE.end}
+            valuePerStep={1}
+            labelMarkStep={1}
+            selectedRange={yearSelectedRange}
+            onChange={setYearSelectedRange}
+            formatLabel={toYearLabel}
+            className='range-slider'
+          />
+        </div>
 
-      <h2 className='sub-title'>Months</h2>
-      <RangeSlider
-        min={MONTH_SLIDER_RANGE.start}
-        max={MONTH_SLIDER_RANGE.end}
-        valuePerStep={1}
-        labelMarkStep={1}
-        selectedRange={monthSelectedRange}
-        onChange={setMonthSelectedRange}
-        formatLabel={toMonthLabel}
-        className='range-slider'
-      />
-      <h2 className='sub-title'>Time</h2>
-      <RangeSlider
-        min={HOUR_SLIDER_RANGE.start}
-        max={HOUR_SLIDER_RANGE.end}
-        valuePerStep={60}
-        selectedRange={hourSelectedRange}
-        onChange={setHourSelectedRange}
-        formatLabel={toTimeLabel}
-        className='range-slider'
-      />
-      <RangeSlider
-        min={HALF_HOUR_SLIDER_RANGE.start}
-        max={HALF_HOUR_SLIDER_RANGE.end}
-        valuePerStep={30}
-        labelMarkStep={1}
-        selectedRange={halfHourSelectedRange}
-        onChange={setHalfHourSelectedRange}
-        formatLabel={toTimeLabel}
-        className='range-slider'
-      />
-      <RangeSlider
-        min={HOUR_QUARTER_SLIDER_RANGE.start}
-        max={HOUR_QUARTER_SLIDER_RANGE.end}
-        valuePerStep={15}
-        labelMarkStep={1}
-        selectedRange={hourQuarterSelectedRange}
-        onChange={setHourQuarterSelectedRange}
-        formatLabel={toTimeLabel}
-        className='range-slider'
-      />
+        <div className='category-examples-container'>
+          <h2 className='sub-title'>Months</h2>
+          <RangeSlider
+            min={MONTH_SLIDER_RANGE.start}
+            max={MONTH_SLIDER_RANGE.end}
+            valuePerStep={1}
+            labelMarkStep={1}
+            selectedRange={monthSelectedRange}
+            onChange={setMonthSelectedRange}
+            formatLabel={toMonthLabel}
+            className='range-slider'
+          />
+        </div>
+
+        <div className='category-examples-container'>
+          <h2 className='sub-title'>Time</h2>
+          <RangeSlider
+            min={HOUR_SLIDER_RANGE.start}
+            max={HOUR_SLIDER_RANGE.end}
+            valuePerStep={60}
+            selectedRange={hourSelectedRange}
+            onChange={setHourSelectedRange}
+            formatLabel={toTimeLabel}
+            className='range-slider'
+          />
+          <RangeSlider
+            min={HALF_HOUR_SLIDER_RANGE.start}
+            max={HALF_HOUR_SLIDER_RANGE.end}
+            valuePerStep={30}
+            labelMarkStep={1}
+            selectedRange={halfHourSelectedRange}
+            onChange={setHalfHourSelectedRange}
+            formatLabel={toTimeLabel}
+            className='range-slider'
+          />
+          <RangeSlider
+            min={HOUR_QUARTER_SLIDER_RANGE.start}
+            max={HOUR_QUARTER_SLIDER_RANGE.end}
+            valuePerStep={15}
+            labelMarkStep={1}
+            selectedRange={hourQuarterSelectedRange}
+            onChange={setHourQuarterSelectedRange}
+            formatLabel={toTimeLabel}
+            className='range-slider'
+          />
+        </div>
+      </div>
     </div>
   );
 }

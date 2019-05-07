@@ -1,16 +1,17 @@
 html {
+  font-size: 62.5%
+}
+
+body {
   margin: 0;
   padding: 0;
-
-  font-size: 62.5%;
 
   .app-container {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    width: 50vw;
-    margin-left: 40px;
-    margin-bottom: 40px;
+    width: 54vw;
+    padding: 10px 40px;
 
     .app-link-container {
       display: flex;
@@ -28,30 +29,38 @@ html {
 
         margin-right: 2rem;
       }
+
+      .title {
+        color: #282828;
+        font-family: Roboto, sans-serif;
+        font-size: 2.8rem;
+        font-weight: 800;
+      }
     }
 
-    .range-slider {
-      margin-top: 95px;
-      margin-left: 15px;
-    }
+    .usage-examples {
+      padding: 5px 10px;
 
-    .title {
-      color: #282828;
-      font-family: Roboto, sans-serif;
-      font-size: 28px;
-      font-weight: 800;
-    }
+      .category-examples-container {
+        margin-top: 20px;
 
-    .sub-title {
-      margin-bottom: -35px;
+        .range-slider {
+          margin-left: 20px;
+          margin-bottom: 40px;
+        }
 
-      color: #212121;
-      font-family: Roboto, sans-serif;
-      font-size: 22px;
-      font-weight: 700;
+        .range-slider + .range-slider {
+          margin-top: 80px;
+        }
 
-      &:not(:first-of-type) {
-        margin-top: 40px;
+        .sub-title {
+          margin: 0;
+
+          color: #212121;
+          font-family: Roboto, sans-serif;
+          font-size: 2.3rem;
+          font-weight: 700;
+        }
       }
     }
   }
