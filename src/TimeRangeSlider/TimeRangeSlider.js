@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import _ from 'lodash';
 
 import { SliderWireframe } from './SliderWireframe';
 
@@ -22,7 +23,7 @@ const CSS_UNIT = 'px';
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
-class TimeRangeSlider extends React.PureComponent {
+class TimeRangeSlider extends React.Component {
   static propTypes = {
     min: PropTypes.number.isRequired,
     max: PropTypes.number.isRequired,
@@ -56,18 +57,19 @@ class TimeRangeSlider extends React.PureComponent {
 
   componentDidMount() {
     this.measureElementsSize();
-    this.calculateSliderElementsPositionsLimits();
     window.addEventListener('resize', this.handleResize);
   }
 
-  componentDidUpdate() {
-    this.measureElementsSize();
-    this.calculateSliderElementsPositionsLimits();
+  shouldComponentUpdate(nextProps, nextState) {
+    const stateChanged = !_.isEqual(nextState, this.state);
+    const propsChanged = !_.isEqual(nextState, this.props);
+
+    const { mode } = this.state;
+    return stateChanged || (propsChanged && mode !== MODE.UNCONTROLLABLE);
   }
 
   handleResize = () => {
     this.measureElementsSize();
-    this.calculateSliderElementsPositionsLimits();
   };
 
   grabStartHandle = event => {
@@ -143,7 +145,10 @@ class TimeRangeSlider extends React.PureComponent {
 
     switch (this.grabbedObject.type) {
       case GRABBED_OBJECT.FIRST_HANDLE: {
-        newStartHandlePosition = clamp(newPosition, this.minHandlePos, this.maxHandlePos);
+        const minHandlePos = -this.handleWidth / 2;
+        const maxHandlePos = this.sliderWidth - this.handleWidth / 2;
+
+        newStartHandlePosition = clamp(newPosition, minHandlePos, maxHandlePos);
         newEndHandlePosition = endHandlePosition;
 
         [newStartHandlePosition, newEndHandlePosition] = this.swapHandlesIfCrossed(
@@ -153,7 +158,10 @@ class TimeRangeSlider extends React.PureComponent {
         break;
       }
       case GRABBED_OBJECT.SECOND_HANDLE: {
-        newEndHandlePosition = clamp(newPosition, this.minHandlePos, this.maxHandlePos);
+        const minHandlePos = -this.handleWidth / 2;
+        const maxHandlePos = this.sliderWidth - this.handleWidth / 2;
+
+        newEndHandlePosition = clamp(newPosition, minHandlePos, maxHandlePos);
         newStartHandlePosition = startHandlePosition;
 
         [newStartHandlePosition, newEndHandlePosition] = this.swapHandlesIfCrossed(
@@ -163,10 +171,13 @@ class TimeRangeSlider extends React.PureComponent {
         break;
       }
       case GRABBED_OBJECT.SELECTED_RANGE: {
+        const minSelectedRangePos = -this.handleWidth / 2;
+        const maxSelectedRangePos = this.sliderWidth - this.selectedRangeLength;
+
         const newSelectedRangeStartPosition = clamp(
           newPosition,
-          this.minSelectedRangePos,
-          this.maxSelectedRangePos,
+          minSelectedRangePos,
+          maxSelectedRangePos,
         );
         newStartHandlePosition = newSelectedRangeStartPosition;
         newEndHandlePosition = newSelectedRangeStartPosition + this.selectedRangeLength;
@@ -233,14 +244,7 @@ class TimeRangeSlider extends React.PureComponent {
     const { timeUnitWidth } = this.state;
     const offsetFromStartInMinutes = minutes - min;
     const offsetFromStartInTimeUnits = offsetFromStartInMinutes / minutesPerTimeUnit;
-    return offsetFromStartInTimeUnits * timeUnitWidth + this.minHandlePos;
-  }
-
-  calculateSliderElementsPositionsLimits() {
-    this.minHandlePos = -this.handleWidth / 2;
-    this.maxHandlePos = this.sliderWidth - this.handleWidth / 2;
-    this.minSelectedRangePos = this.minHandlePos;
-    this.maxSelectedRangePos = this.sliderWidth - this.selectedRangeLength;
+    return offsetFromStartInTimeUnits * timeUnitWidth - this.handleWidth / 2;
   }
 
   measureElementsSize() {
