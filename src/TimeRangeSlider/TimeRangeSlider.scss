@@ -85,6 +85,10 @@
     border-right: none;
 
     background-color: rgba(255, 222, 65, 0.4);
+
+    &.smooth-position-transition {
+      transition: left 0.3s ease-out, width 0.3s ease-out
+    }
   }
 
   .slider-handle {
@@ -99,6 +103,10 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 1px;
     cursor: ew-resize;
+
+    &.smooth-position-transition {
+      transition: left 0.3s ease-out
+    }
 
     &:after {
       position: absolute;

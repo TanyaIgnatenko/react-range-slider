@@ -94,7 +94,6 @@ class TimeRangeSlider extends React.PureComponent {
     document.addEventListener('mousemove', this.moveObject);
     document.addEventListener('mouseup', this.releaseObject);
 
-    this.removeSmoothHoursRoundingAnimation();
     this.switchToUncontrollableMode();
   }
 
@@ -102,21 +101,23 @@ class TimeRangeSlider extends React.PureComponent {
     document.removeEventListener('mousemove', this.moveObject);
     document.removeEventListener('mouseup', this.releaseObject);
     this.grabbedObject.type = GRABBED_OBJECT.NONE;
-    this.addSmoothHoursRoundingAnimation();
+    this.animateSelectedRangeRounding();
     this.switchToControllableMode();
   };
 
-  addSmoothHoursRoundingAnimation() {
-    this.selectedRange.style.transition = 'left 0.3s ease-out, width 0.3s ease-out';
-    this.startHandle.style.transition = 'left 0.3s ease-out';
-    this.endHandle.style.transition = 'left 0.3s ease-out';
+  animateSelectedRangeRounding() {
+    this.selectedRange.classList.add('smooth-position-transition');
+    this.startHandle.classList.add('smooth-position-transition');
+    this.endHandle.classList.add('smooth-position-transition');
+
+    setTimeout(this.finishSelectedRangeRoundingAnimation, 3000);
   }
 
-  removeSmoothHoursRoundingAnimation() {
-    this.selectedRange.style.transition = '';
-    this.startHandle.style.transition = '';
-    this.endHandle.style.transition = '';
-  }
+  finishSelectedRangeRoundingAnimation = () => {
+    this.selectedRange.classList.remove('smooth-position-transition');
+    this.startHandle.classList.remove('smooth-position-transition');
+    this.endHandle.classList.remove('smooth-position-transition');
+  };
 
   switchToUncontrollableMode() {
     const { selectedRange } = this.props;
