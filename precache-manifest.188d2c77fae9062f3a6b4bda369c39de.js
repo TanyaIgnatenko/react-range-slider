@@ -8,19 +8,19 @@ self.__precacheManifest = [
     "url": "/react-range-slider/static/js/runtime~main.87722e3b.js"
   },
   {
-    "revision": "a0a1d7972aa87ac42cd7",
-    "url": "/react-range-slider/static/js/main.8147d89c.chunk.js"
+    "revision": "d244808d7dc94170031a",
+    "url": "/react-range-slider/static/js/main.55ebe814.chunk.js"
   },
   {
     "revision": "a5f8c4ec13cfbea8b61e",
     "url": "/react-range-slider/static/js/2.a8221899.chunk.js"
   },
   {
-    "revision": "a0a1d7972aa87ac42cd7",
+    "revision": "d244808d7dc94170031a",
     "url": "/react-range-slider/static/css/main.1c161ddb.chunk.css"
   },
   {
-    "revision": "803141a23aed9449d7eb5d1023375a50",
+    "revision": "a341670babe4951f1e3f3686cf06f6bf",
     "url": "/react-range-slider/index.html"
   }
 ];
