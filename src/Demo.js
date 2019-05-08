@@ -11,36 +11,6 @@ const repoLink = 'https://github.com/TanyaIgnatenko/react-range-slider';
 const MINUTES_IN_HOUR = 60;
 const HOURS_IN_DAY = 24;
 
-const HOUR_SLIDER_RANGE = {
-  start: 10 * MINUTES_IN_HOUR,
-  end: 26 * MINUTES_IN_HOUR,
-};
-
-const HALF_HOUR_SLIDER_RANGE = {
-  start: 10 * MINUTES_IN_HOUR,
-  end: 13.5 * MINUTES_IN_HOUR,
-};
-
-const HOUR_QUARTER_SLIDER_RANGE = {
-  start: 10 * MINUTES_IN_HOUR,
-  end: 11.25 * MINUTES_IN_HOUR,
-};
-
-const PRICE_SLIDER_RANGE = {
-  start: 100,
-  end: 3000,
-};
-
-const YEAR_SLIDER_RANGE = {
-  start: 2015,
-  end: 2020,
-};
-
-const MONTH_SLIDER_RANGE = {
-  start: 1,
-  end: 5,
-};
-
 const toPriceLabel = price => `$${price}`;
 
 const toYearLabel = year => year;
@@ -70,19 +40,24 @@ const toTimeLabel = minutes => {
 };
 
 function Demo() {
-  const [hourSelectedRange, setHourSelectedRange] = useState(HOUR_SLIDER_RANGE);
+  const [priceSelectedRange, setPriceSelectedRange] = useState({ start: 600, end: 3000 });
+  const [yearSelectedRange, setYearSelectedRange] = useState({ start: 2015, end: 2018 });
+  const [monthSelectedRange, setMonthSelectedRange] = useState({ start: 3, end: 5 });
 
-  const [halfHourSelectedRange, setHalfHourSelectedRange] = useState(HALF_HOUR_SLIDER_RANGE);
+  const [hourSelectedRange, setHourSelectedRange] = useState({
+    start: 14 * MINUTES_IN_HOUR,
+    end: 22 * MINUTES_IN_HOUR,
+  });
 
-  const [hourQuarterSelectedRange, setHourQuarterSelectedRange] = useState(
-    HOUR_QUARTER_SLIDER_RANGE,
-  );
+  const [halfHourSelectedRange, setHalfHourSelectedRange] = useState({
+    start: 11.5 * MINUTES_IN_HOUR,
+    end: 13 * MINUTES_IN_HOUR,
+  });
 
-  const [priceSelectedRange, setPriceSelectedRange] = useState({ start: 1100, end: 3000 });
-
-  const [yearSelectedRange, setYearSelectedRange] = useState(YEAR_SLIDER_RANGE);
-
-  const [monthSelectedRange, setMonthSelectedRange] = useState(MONTH_SLIDER_RANGE);
+  const [hourQuarterSelectedRange, setHourQuarterSelectedRange] = useState({
+    start: 10 * MINUTES_IN_HOUR,
+    end: 11.25 * MINUTES_IN_HOUR,
+  });
 
   return (
     <div className='app-container'>
@@ -95,8 +70,8 @@ function Demo() {
         <div className='category-examples-container'>
           <h2 className='sub-title'>Price</h2>
           <RangeSlider
-            min={PRICE_SLIDER_RANGE.start}
-            max={PRICE_SLIDER_RANGE.end}
+            min={100}
+            max={3000}
             valuePerStep={100}
             labelMarkStep={5}
             selectedRange={priceSelectedRange}
@@ -108,8 +83,8 @@ function Demo() {
         <div className='category-examples-container'>
           <h2 className='sub-title'>Years</h2>
           <RangeSlider
-            min={YEAR_SLIDER_RANGE.start}
-            max={YEAR_SLIDER_RANGE.end}
+            min={2015}
+            max={2020}
             valuePerStep={1}
             labelMarkStep={1}
             selectedRange={yearSelectedRange}
@@ -122,8 +97,8 @@ function Demo() {
         <div className='category-examples-container'>
           <h2 className='sub-title'>Months</h2>
           <RangeSlider
-            min={MONTH_SLIDER_RANGE.start}
-            max={MONTH_SLIDER_RANGE.end}
+            min={1}
+            max={5}
             valuePerStep={1}
             labelMarkStep={1}
             selectedRange={monthSelectedRange}
@@ -136,8 +111,8 @@ function Demo() {
         <div className='category-examples-container'>
           <h2 className='sub-title'>Time</h2>
           <RangeSlider
-            min={HOUR_SLIDER_RANGE.start}
-            max={HOUR_SLIDER_RANGE.end}
+            min={10 * MINUTES_IN_HOUR}
+            max={26 * MINUTES_IN_HOUR}
             valuePerStep={60}
             selectedRange={hourSelectedRange}
             onChange={setHourSelectedRange}
@@ -145,8 +120,8 @@ function Demo() {
             className='range-slider'
           />
           <RangeSlider
-            min={HALF_HOUR_SLIDER_RANGE.start}
-            max={HALF_HOUR_SLIDER_RANGE.end}
+            min={10 * MINUTES_IN_HOUR}
+            max={13.5 * MINUTES_IN_HOUR}
             valuePerStep={30}
             labelMarkStep={1}
             selectedRange={halfHourSelectedRange}
@@ -155,8 +130,8 @@ function Demo() {
             className='range-slider'
           />
           <RangeSlider
-            min={HOUR_QUARTER_SLIDER_RANGE.start}
-            max={HOUR_QUARTER_SLIDER_RANGE.end}
+            min={10 * MINUTES_IN_HOUR}
+            max={11.25 * MINUTES_IN_HOUR}
             valuePerStep={15}
             labelMarkStep={1}
             selectedRange={hourQuarterSelectedRange}
