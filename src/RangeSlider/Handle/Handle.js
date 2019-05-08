@@ -25,7 +25,8 @@ class Handle extends React.Component {
 
   cursorShift = null;
 
-  grab = ({ target: handle, pageX: cursorX }) => {
+  grab = event => {
+    const { target: handle, pageX: cursorX } = event;
     const { onChangeStart, name } = this.props;
 
     const handleLeft = handle.getBoundingClientRect().left;
@@ -35,9 +36,13 @@ class Handle extends React.Component {
     document.addEventListener('mouseup', this.release);
 
     onChangeStart(name);
+
+    event.stopPropagation();
+    event.preventDefault();
   };
 
-  move = ({ pageX: cursorPagePosition }) => {
+  move = event => {
+    const { pageX: cursorPagePosition } = event;
     const { normalizedValue: oldValue, onChange, name } = this.props;
     const { pagePositionToNormalizedValue: normalizeValue } = this.props;
 
@@ -47,14 +52,20 @@ class Handle extends React.Component {
     if (newValue !== oldValue) {
       onChange(name, newValue);
     }
+
+    event.stopPropagation();
+    event.preventDefault();
   };
 
-  release = () => {
+  release = event => {
     document.removeEventListener('mousemove', this.move);
     document.removeEventListener('mouseup', this.release);
 
     const { onChangeEnd, name } = this.props;
     onChangeEnd(name);
+
+    event.stopPropagation();
+    event.preventDefault();
   };
 
   render() {

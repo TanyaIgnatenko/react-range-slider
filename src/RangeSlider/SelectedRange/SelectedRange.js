@@ -27,7 +27,8 @@ class SelectedRange extends React.Component {
 
   cursorShift = null;
 
-  grab = ({ target: selectedRange, pageX: cursorX }) => {
+  grab = event => {
+    const { target: selectedRange, pageX: cursorX } = event;
     const { onChangeStart } = this.props;
 
     const selectedRangeLeft = selectedRange.getBoundingClientRect().left;
@@ -37,9 +38,13 @@ class SelectedRange extends React.Component {
     document.addEventListener('mouseup', this.release);
 
     onChangeStart();
+
+    event.stopPropagation();
+    event.preventDefault();
   };
 
-  move = ({ pageX: cursorPageValue }) => {
+  move = event => {
+    const { pageX: cursorPageValue } = event;
     const { normalizedRange, onChange } = this.props;
     const { pagePositionToNormalizedValue: normalizeValue } = this.props;
 
@@ -56,14 +61,20 @@ class SelectedRange extends React.Component {
     if (!_.isEqual(newNormalizedRange, normalizedRange)) {
       onChange(newNormalizedRange);
     }
+
+    event.stopPropagation();
+    event.preventDefault();
   };
 
-  release = () => {
+  release = event => {
     document.removeEventListener('mousemove', this.move);
     document.removeEventListener('mouseup', this.release);
 
     const { onChangeEnd } = this.props;
     onChangeEnd();
+
+    event.stopPropagation();
+    event.preventDefault();
   };
 
   render() {

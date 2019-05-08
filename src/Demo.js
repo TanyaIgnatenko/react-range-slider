@@ -78,7 +78,7 @@ function Demo() {
     HOUR_QUARTER_SLIDER_RANGE,
   );
 
-  const [priceSelectedRange, setPriceSelectedRange] = useState(PRICE_SLIDER_RANGE);
+  const [priceSelectedRange, setPriceSelectedRange] = useState({ start: 1100, end: 3000 });
 
   const [yearSelectedRange, setYearSelectedRange] = useState(YEAR_SLIDER_RANGE);
 
