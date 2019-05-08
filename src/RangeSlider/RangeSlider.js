@@ -37,6 +37,10 @@ class RangeSlider extends React.Component {
 
   state = {
     mode: MODE.IDLE,
+    // handlesNames: {
+    //   first: 'start',
+    //   second: 'end',
+    // },
     selectedRange: {
       start: null,
       end: null,
@@ -93,7 +97,7 @@ class RangeSlider extends React.Component {
     this.firstHandle.classList.add('smooth-position-transition');
     this.secondHandle.classList.add('smooth-position-transition');
 
-    setTimeout(this.finishSelectedRangeRoundingAnimation, 3000);
+    setTimeout(this.finishSelectedRangeRoundingAnimation, 500);
   }
 
   finishSelectedRangeRoundingAnimation = () => {
