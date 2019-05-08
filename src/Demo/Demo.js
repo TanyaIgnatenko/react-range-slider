@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import RangeSlider from './RangeSlider/RangeSlider';
+import { RangeSlider } from '../RangeSlider';
 
-import githubLogo from './github-logo.svg';
+import githubLogo from './images/github-logo.svg';
 
 import './Demo.scss';
 
