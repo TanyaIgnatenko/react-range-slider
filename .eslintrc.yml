@@ -32,6 +32,7 @@ settings:
 
 rules:
   no-unused-expressions: off
+  lines-between-class-members: off
   one-var: off
   react/sort-comp: off
   no-alert: off

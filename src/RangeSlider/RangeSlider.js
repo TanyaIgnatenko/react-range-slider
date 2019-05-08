@@ -43,6 +43,10 @@ class RangeSlider extends React.Component {
     },
   };
 
+  firstHandleName = 'start';
+  secondHandleName = 'end';
+  handlesSwappedWhileDrag = false;
+
   componentDidMount() {
     this.measureElementsSize();
     window.addEventListener('resize', this.handleResize);
@@ -86,40 +90,40 @@ class RangeSlider extends React.Component {
 
   animateSelectedRangeRounding() {
     this.selectedRange.classList.add('smooth-position-transition');
-    this.startHandle.classList.add('smooth-position-transition');
-    this.endHandle.classList.add('smooth-position-transition');
+    this.firstHandle.classList.add('smooth-position-transition');
+    this.secondHandle.classList.add('smooth-position-transition');
 
     setTimeout(this.finishSelectedRangeRoundingAnimation, 3000);
   }
 
   finishSelectedRangeRoundingAnimation = () => {
     this.selectedRange.classList.remove('smooth-position-transition');
-    this.startHandle.classList.remove('smooth-position-transition');
-    this.endHandle.classList.remove('smooth-position-transition');
+    this.firstHandle.classList.remove('smooth-position-transition');
+    this.secondHandle.classList.remove('smooth-position-transition');
   };
 
-  handleStartHandleValueChange = value => {
+  handleHandleValueChange = (handle, value) => {
     const { selectedRange } = this.state;
-    const normalizedEnd = this.absoluteValueToNormalized(selectedRange.end);
 
-    const newSelectedRange = {
-      start: Math.min(value, normalizedEnd),
-      end: Math.max(value, normalizedEnd),
-    };
+    const normalizedRange = this.absoluteRangeToNormalized(selectedRange);
+    normalizedRange[handle] = value;
 
-    this.handleSelectedRangeChange(newSelectedRange);
+    if (normalizedRange.start > normalizedRange.end) {
+      [normalizedRange.start, normalizedRange.end] = [normalizedRange.end, normalizedRange.start];
+      [this.firstHandleName, this.secondHandleName] = [this.secondHandleName, this.firstHandleName];
+      this.handlesSwappedWhileDrag = !this.handlesSwappedWhileDrag;
+    }
+
+    this.handleSelectedRangeChange(normalizedRange);
   };
 
-  handleEndHandleValueChange = value => {
-    const { selectedRange } = this.state;
-    const normalizedStart = this.absoluteValueToNormalized(selectedRange.start);
+  handleHandleChangeEnd = () => {
+    if (this.handlesSwappedWhileDrag) {
+      [this.firstHandleName, this.secondHandleName] = [this.secondHandleName, this.firstHandleName];
+      this.handlesSwappedWhileDrag = false;
+    }
 
-    const newSelectedRange = {
-      start: Math.min(normalizedStart, value),
-      end: Math.max(normalizedStart, value),
-    };
-
-    this.handleSelectedRangeChange(newSelectedRange);
+    this.handleChangeEnd();
   };
 
   handleSelectedRangeChange = normalizedRange => {
@@ -127,12 +131,12 @@ class RangeSlider extends React.Component {
     this.setState({ selectedRange: absoluteRange });
 
     const { onChange } = this.props;
-    const roundedAbsoluteRange = {
+    const roundedRange = {
       start: this.roundValue(absoluteRange.start),
       end: this.roundValue(absoluteRange.end),
     };
 
-    onChange(roundedAbsoluteRange);
+    onChange(roundedRange);
   };
 
   roundValue = value => {
@@ -168,9 +172,9 @@ class RangeSlider extends React.Component {
 
   setSelectedRangeRef = selectedRange => (this.selectedRange = selectedRange);
 
-  setStartHandleRef = handle => (this.startHandle = handle);
+  setFirstHandleRef = handle => (this.firstHandle = handle);
 
-  setEndHandleRef = handle => (this.endHandle = handle);
+  setSecondHandleRef = handle => (this.secondHandle = handle);
 
   getSelectedRange() {
     const { mode } = this.state;
@@ -191,19 +195,21 @@ class RangeSlider extends React.Component {
     return (
       <div ref={this.setSliderRef} className={classNames('slider-box', className)}>
         <Handle
-          handleRef={this.setStartHandleRef}
+          name={this.firstHandleName}
+          handleRef={this.setFirstHandleRef}
           normalizedValue={normalizedSelectedRange.start}
-          onChange={this.handleStartHandleValueChange}
+          onChange={this.handleHandleValueChange}
           onChangeStart={this.handleChangeStart}
-          onChangeEnd={this.handleChangeEnd}
+          onChangeEnd={this.handleHandleChangeEnd}
           pagePositionToNormalizedValue={this.pagePositionToNormalizedValue}
         />
         <Handle
-          handleRef={this.setEndHandleRef}
+          name={this.secondHandleName}
+          handleRef={this.setSecondHandleRef}
           normalizedValue={normalizedSelectedRange.end}
-          onChange={this.handleEndHandleValueChange}
+          onChange={this.handleHandleValueChange}
           onChangeStart={this.handleChangeStart}
-          onChangeEnd={this.handleChangeEnd}
+          onChangeEnd={this.handleHandleChangeEnd}
           pagePositionToNormalizedValue={this.pagePositionToNormalizedValue}
         />
         <SelectedRange

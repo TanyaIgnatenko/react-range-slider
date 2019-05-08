@@ -8,6 +8,7 @@ const CSS_UNIT = '%';
 
 class Handle extends React.Component {
   static propTypes = {
+    name: PropTypes.string.isRequired,
     normalizedValue: PropTypes.number.isRequired,
     pagePositionToNormalizedValue: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -25,7 +26,7 @@ class Handle extends React.Component {
   cursorShift = null;
 
   grab = ({ target: handle, pageX: cursorX }) => {
-    const { onChangeStart } = this.props;
+    const { onChangeStart, name } = this.props;
 
     const handleLeft = handle.getBoundingClientRect().left;
     this.cursorShift = cursorX - handleLeft;
@@ -33,18 +34,18 @@ class Handle extends React.Component {
     document.addEventListener('mousemove', this.move);
     document.addEventListener('mouseup', this.release);
 
-    onChangeStart();
+    onChangeStart(name);
   };
 
   move = ({ pageX: cursorPagePosition }) => {
-    const { normalizedValue: oldValue, onChange } = this.props;
+    const { normalizedValue: oldValue, onChange, name } = this.props;
     const { pagePositionToNormalizedValue: normalizeValue } = this.props;
 
     const normalizedValue = normalizeValue(cursorPagePosition - this.cursorShift);
     const newValue = _.clamp(normalizedValue, 0, 1);
 
     if (newValue !== oldValue) {
-      onChange(newValue);
+      onChange(name, newValue);
     }
   };
 
@@ -52,8 +53,8 @@ class Handle extends React.Component {
     document.removeEventListener('mousemove', this.move);
     document.removeEventListener('mouseup', this.release);
 
-    const { onChangeEnd } = this.props;
-    onChangeEnd();
+    const { onChangeEnd, name } = this.props;
+    onChangeEnd(name);
   };
 
   render() {

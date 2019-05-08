@@ -68,13 +68,17 @@ class SelectedRange extends React.Component {
 
   render() {
     const { normalizedRange, selectedRangeRef } = this.props;
+
+    const selectedRangeStart = Math.min(normalizedRange.start, normalizedRange.end);
+    const selectedRangeLength = Math.abs(normalizedRange.end - normalizedRange.start);
+
     return (
       <div
         ref={selectedRangeRef}
         className='selected-range'
         style={{
-          left: normalizedRange.start * 100 + CSS_UNIT,
-          width: (normalizedRange.end - normalizedRange.start) * 100 + CSS_UNIT,
+          left: selectedRangeStart * 100 + CSS_UNIT,
+          width: selectedRangeLength * 100 + CSS_UNIT,
         }}
         onMouseDown={this.grab}
       />
