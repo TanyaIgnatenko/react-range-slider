@@ -37,10 +37,6 @@ class RangeSlider extends React.Component {
 
   state = {
     mode: MODE.IDLE,
-    // handlesNames: {
-    //   first: 'start',
-    //   second: 'end',
-    // },
     selectedRange: {
       start: null,
       end: null,
@@ -114,19 +110,26 @@ class RangeSlider extends React.Component {
 
     if (normalizedRange.start > normalizedRange.end) {
       [normalizedRange.start, normalizedRange.end] = [normalizedRange.end, normalizedRange.start];
-      [this.firstHandleName, this.secondHandleName] = [this.secondHandleName, this.firstHandleName];
-      this.handlesSwappedWhileDrag = !this.handlesSwappedWhileDrag;
+      this.swapHandlesWhileDrag();
     }
 
     this.handleSelectedRangeChange(normalizedRange);
   };
 
+  swapHandlesWhileDrag() {
+    [this.firstHandleName, this.secondHandleName] = [this.secondHandleName, this.firstHandleName];
+    this.handlesSwappedWhileDrag = !this.handlesSwappedWhileDrag;
+  }
+
+  resetHandles() {
+    [this.firstHandleName, this.secondHandleName] = ['start', 'end'];
+    this.handlesSwappedWhileDrag = false;
+  }
+
   handleHandleChangeEnd = () => {
     if (this.handlesSwappedWhileDrag) {
-      [this.firstHandleName, this.secondHandleName] = [this.secondHandleName, this.firstHandleName];
-      this.handlesSwappedWhileDrag = false;
+      this.resetHandles();
     }
-
     this.handleChangeEnd();
   };
 
