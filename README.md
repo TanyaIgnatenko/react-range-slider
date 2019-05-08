@@ -5,8 +5,12 @@ RangeSlider is a React component allowing users to input numeric ranges within a
 **A running demo is available [here](https://tanyaignatenko.github.io/react-range-slider/).**
 
 ## Screenshots
-![Component screenshots](src/Demo/images/examples.png)
-![Component screenshots](src/Demo/images/slider.gif)
+![Component screenshots](src/Demo/images/examples-2.png)
+
+## Features
+ * Draggable handles
+ * Draggable selectedRange
+ * Handles can be crossed
 
 ## Usage
 ````js
@@ -66,12 +70,12 @@ Format label of given value.
 Set step to get next value from current.
 Default: 1. 
 
-#### labelMarkStep: number
+#### labelMarkStep?: number
 
 Set step per which label mark would be printed.
 Default: 4. 
 
-#### className: string
+#### className?: string
 
 Add className to component outermost container. 
 Default: ''. 
