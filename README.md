@@ -43,39 +43,37 @@ ReactDOM.render(<App />, document.getElementById('app'));
 `````
 ## API
 
-### RangeSlider props
-
-#### `min: number`
+### `min: number`
 
 Set a minimum value that can be selected
 
-#### `max: number`
+### `max: number`
 
 Set a maximum value that can be selected
 
-#### `selectedRange: { start: number, end: number }`
+### `selectedRange: { start: number, end: number }`
 
 Set current selected range. Have no effect while drag happening.
 
-#### `onChange: (range: { start: number, end: number }): void`
+### `onChange: (range: { start: number, end: number }): void`
 
 Whenever user drags slider handles/range, this function gets called. Inside the function, you should assign a new selected range to your component.
 
-#### `formatLabel: (value: number): string`
+### `formatLabel: (value: number): string`
 
 Format label of given value.
 
-#### `valuePerStep?: number`
+### `valuePerStep?: number`
 
 Set step to get next value from current.
 Default: 1. 
 
-#### `labelMarkStep?: number`
+### `labelMarkStep?: number`
 
 Set step per which label mark would be printed.
 Default: 4. 
 
-#### `className?: string`
+### `className?: string`
 
 Add className to component outermost container. 
 Default: ''. 
