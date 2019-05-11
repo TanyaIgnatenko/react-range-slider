@@ -21,7 +21,7 @@ import RangeSlider from 'react-range-slider';
 const toPriceLabel = price => `$${price}`;
 
 function App() {
-  const [priceSelectedRange, setPriceSelectedRange] = useState({
+  const [selectedPriceRange, setSelectedPriceRange] = useState({
     start: 600,
     end: 3000,
   });
@@ -32,8 +32,8 @@ function App() {
       max={3000}
       valuePerStep={100}
       labelMarkStep={5}
-      selectedRange={priceSelectedRange}
-      onChange={setPriceSelectedRange}
+      selectedRange={selectedPriceRange}
+      onChange={setSelectedPriceRange}
       formatLabel={toPriceLabel}
     />
   );
