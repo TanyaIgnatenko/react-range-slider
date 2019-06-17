@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import _ from 'lodash';
+import { isEqual } from 'lodash';
 
 import { SliderWireframe } from './SliderWireframe';
 import { SelectedRange } from './SelectedRange';
@@ -53,8 +53,8 @@ class RangeSlider extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const stateChanged = !_.isEqual(nextState, this.state);
-    const propsChanged = !_.isEqual(nextState, this.props);
+    const stateChanged = !isEqual(nextState, this.state);
+    const propsChanged = !isEqual(nextState, this.props);
 
     const { mode } = this.state;
     return stateChanged || (propsChanged && mode !== MODE.DRAG);

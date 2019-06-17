@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { isEqual } from 'lodash';
+
+import { clamp } from '../utils/clamp';
 
 import './SelectedRange.scss';
 
@@ -54,11 +56,11 @@ class SelectedRange extends React.Component {
     const newNormalizedRangeEnd = newNormalizedRangeStart + normalizedRangeLength;
 
     const newNormalizedRange = {
-      start: _.clamp(newNormalizedRangeStart, 0, 1 - normalizedRangeLength),
-      end: _.clamp(newNormalizedRangeEnd, normalizedRangeLength, 1),
+      start: clamp(newNormalizedRangeStart, 0, 1 - normalizedRangeLength),
+      end: clamp(newNormalizedRangeEnd, normalizedRangeLength, 1),
     };
 
-    if (!_.isEqual(newNormalizedRange, normalizedRange)) {
+    if (!isEqual(newNormalizedRange, normalizedRange)) {
       onChange(newNormalizedRange);
     }
 
