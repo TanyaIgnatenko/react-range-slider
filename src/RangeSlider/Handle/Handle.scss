@@ -10,6 +10,7 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 1px;
   cursor: ew-resize;
+  touch-action: none;
 
   &.smooth-position-transition {
     transition: left 0.3s ease-out

@@ -36,8 +36,8 @@ class SelectedRange extends React.Component {
     const selectedRangeLeft = selectedRange.getBoundingClientRect().left;
     this.cursorShift = cursorX - selectedRangeLeft;
 
-    document.addEventListener('mousemove', this.move);
-    document.addEventListener('mouseup', this.release);
+    document.addEventListener('pointermove', this.move);
+    document.addEventListener('pointerup', this.release);
 
     onChangeStart();
 
@@ -69,8 +69,8 @@ class SelectedRange extends React.Component {
   };
 
   release = event => {
-    document.removeEventListener('mousemove', this.move);
-    document.removeEventListener('mouseup', this.release);
+    document.removeEventListener('pointermove', this.move);
+    document.removeEventListener('pointerup', this.release);
 
     const { onChangeEnd } = this.props;
     onChangeEnd();
@@ -93,7 +93,7 @@ class SelectedRange extends React.Component {
           left: selectedRangeStart * 100 + CSS_UNIT,
           width: selectedRangeLength * 100 + CSS_UNIT,
         }}
-        onMouseDown={this.grab}
+        onPointerDown={this.grab}
       />
     );
   }

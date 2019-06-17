@@ -7,6 +7,7 @@
   border-right: none;
 
   background-color: rgba(255, 222, 65, 0.4);
+  touch-action: none;
 
   &.smooth-position-transition {
     transition: left 0.3s ease-out, width 0.3s ease-out

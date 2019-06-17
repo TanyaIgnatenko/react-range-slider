@@ -33,8 +33,8 @@ class Handle extends React.Component {
     const handleLeft = handle.getBoundingClientRect().left;
     this.cursorShift = cursorX - handleLeft;
 
-    document.addEventListener('mousemove', this.move);
-    document.addEventListener('mouseup', this.release);
+    document.addEventListener('pointermove', this.move);
+    document.addEventListener('pointerup', this.release);
 
     onChangeStart(name);
 
@@ -59,8 +59,8 @@ class Handle extends React.Component {
   };
 
   release = event => {
-    document.removeEventListener('mousemove', this.move);
-    document.removeEventListener('mouseup', this.release);
+    document.removeEventListener('pointermove', this.move);
+    document.removeEventListener('pointerup', this.release);
 
     const { onChangeEnd, name } = this.props;
     onChangeEnd(name);
@@ -79,7 +79,7 @@ class Handle extends React.Component {
           left: normalizedValue * 100 + CSS_UNIT,
           transform: 'translateX(-50%)',
         }}
-        onMouseDown={this.grab}
+        onPointerDown={this.grab}
       />
     );
   }
