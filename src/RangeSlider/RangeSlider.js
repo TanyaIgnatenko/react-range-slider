@@ -121,18 +121,6 @@ class RangeSlider extends React.Component {
     this.handlesSwappedWhileDrag = !this.handlesSwappedWhileDrag;
   }
 
-  resetHandles() {
-    [this.firstHandleName, this.secondHandleName] = ['start', 'end'];
-    this.handlesSwappedWhileDrag = false;
-  }
-
-  handleHandleChangeEnd = () => {
-    if (this.handlesSwappedWhileDrag) {
-      this.resetHandles();
-    }
-    this.handleChangeEnd();
-  };
-
   handleSelectedRangeChange = normalizedRange => {
     const absoluteRange = this.normalizedRangeToAbsolute(normalizedRange);
     this.setState({ selectedRange: absoluteRange });
@@ -204,19 +192,19 @@ class RangeSlider extends React.Component {
         <Handle
           name={this.firstHandleName}
           handleRef={this.setFirstHandleRef}
-          normalizedValue={normalizedSelectedRange.start}
+          normalizedValue={normalizedSelectedRange[this.firstHandleName]}
           onChange={this.handleHandleValueChange}
           onChangeStart={this.handleChangeStart}
-          onChangeEnd={this.handleHandleChangeEnd}
+          onChangeEnd={this.handleChangeEnd}
           pagePositionToNormalizedValue={this.pagePositionToNormalizedValue}
         />
         <Handle
           name={this.secondHandleName}
           handleRef={this.setSecondHandleRef}
-          normalizedValue={normalizedSelectedRange.end}
+          normalizedValue={normalizedSelectedRange[this.secondHandleName]}
           onChange={this.handleHandleValueChange}
           onChangeStart={this.handleChangeStart}
-          onChangeEnd={this.handleHandleChangeEnd}
+          onChangeEnd={this.handleChangeEnd}
           pagePositionToNormalizedValue={this.pagePositionToNormalizedValue}
         />
         <SelectedRange

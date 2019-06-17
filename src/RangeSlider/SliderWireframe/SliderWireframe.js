@@ -17,7 +17,7 @@ function Wireframe({ min, max, valuePerStep, formatLabel, labelMarkStep }) {
     <>
       {rangeUnits.map((unit, step) =>
         islabelMarkStep(step) ? (
-          <div className='time-interval-with-mark-box'>
+          <div key={unit} className='time-interval-with-mark-box'>
             <p className={classNames('mark-label', { first: isFirstStep(step) })}>
               {formatLabel(unit)}
             </p>
