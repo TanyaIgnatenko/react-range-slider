@@ -45,7 +45,6 @@ class RangeSlider extends React.Component {
 
   firstHandleName = 'start';
   secondHandleName = 'end';
-  handlesSwappedWhileDrag = false;
 
   componentDidMount() {
     this.measureElementsSize();
