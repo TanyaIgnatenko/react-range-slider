@@ -11,6 +11,7 @@ body {
     flex-direction: column;
     box-sizing: border-box;
     width: 54vw;
+    min-width: 450px;
     padding: 10px 40px;
 
     .app-link-container {
