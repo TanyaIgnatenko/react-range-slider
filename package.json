@@ -11,7 +11,7 @@
     "node-sass": "^4.11.0",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
-    "react-scripts": "2.1.8",
+    "react-scripts": "5.0.1",
     "run": "^1.4.0"
   },
   "scripts": {
