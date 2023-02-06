@@ -2,7 +2,7 @@
 
 A common component to select numeric ranges with flexible and easy to read API.
 
-**[DEMO](https://tanyaignatenko.github.io/react-range-slider/).**
+**[DEMO](https://tanyaignatenko.github.io/react-range-slider/)**
 
 ## Screenshots
 ![Component screenshots](src/Demo/images/examples-2.png)
