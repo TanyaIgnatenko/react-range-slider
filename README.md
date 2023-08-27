@@ -1,6 +1,6 @@
 # Range Slider for your react app
 
-A common component to select numeric ranges with flexible and easy to read API.
+A common component to select numeric ranges.
 
 **[DEMO](https://tanyaignatenko.github.io/react-range-slider/)**
 
