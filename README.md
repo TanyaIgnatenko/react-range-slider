@@ -2,15 +2,15 @@
 
 A common component to select numeric ranges.
 
-**[DEMO](https://tanyaignatenko.github.io/react-range-slider/)**
-
-## Screenshots
-![Component screenshots](src/Demo/images/examples-2.png)
-
 ## Features
  * Draggable handles
  * Draggable selectedRange
  * Handles can be crossed
+
+**[DEMO](https://tanyaignatenko.github.io/react-range-slider/)**
+
+## Screenshots
+![Component screenshots](src/Demo/images/examples-2.png)
 
 ## Usage
 ````js
