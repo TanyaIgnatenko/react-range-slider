@@ -7,7 +7,7 @@ A common component to select numeric ranges.
  * Draggable selectedRange
  * Handles can be crossed
 
-**[DEMO](https://tanyaignatenko.github.io/react-range-slider/)**
+**[DEMO](https://tanyaignatenko.github.io/React-Range-Slider/)**
 
 ## Screenshots
 ![Component screenshots](src/Demo/images/examples-2.png)
