@@ -1,7 +1,7 @@
 {
   "name": "react-range-slider",
   "version": "0.1.0",
-  "homepage": "https://tanyaignatenko.github.io/React-Range-Slider/",
+  "homepage": "https://tanyaignatenko.github.io/react-range-slider/",
   "private": true,
   "dependencies": {
     "build": "^0.1.4",
